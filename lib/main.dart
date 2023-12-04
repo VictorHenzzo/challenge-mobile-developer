@@ -1,5 +1,7 @@
 import 'package:challenge_mobile_developer/core/infra/initializers/infra_initializer.dart';
+import 'package:challenge_mobile_developer/core/infra/navigation/app_navigator.dart';
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_route.dart';
+import 'package:challenge_mobile_developer/theme/app_theme_data.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -16,13 +18,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Challenge Mobile Developer',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: const AppThemeData().theme,
       routes: const {
         LoginScreenRoute.path: LoginScreenRoute.of,
       },
+      navigatorKey: AppNavigator.navigatorKey,
       initialRoute: LoginScreenRoute.path,
     );
   }
