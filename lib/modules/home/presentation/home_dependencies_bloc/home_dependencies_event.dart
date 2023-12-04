@@ -7,9 +7,6 @@ sealed class HomeDependenciesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-sealed class HomeDependenciesFetchEvent extends Equatable {
+sealed class HomeDependenciesFetchEvent extends HomeDependenciesEvent {
   const HomeDependenciesFetchEvent();
-
-  @override
-  List<Object> get props => [];
 }
