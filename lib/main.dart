@@ -1,5 +1,6 @@
 import 'package:challenge_mobile_developer/core/infra/initializers/infra_initializer.dart';
 import 'package:challenge_mobile_developer/core/infra/navigation/app_navigator.dart';
+import 'package:challenge_mobile_developer/modules/home/navigation/home_screen_route.dart';
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_route.dart';
 import 'package:challenge_mobile_developer/theme/app_theme_data.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       theme: const AppThemeData().theme,
       routes: const {
         LoginScreenRoute.path: LoginScreenRoute.of,
+        HomeScreenRoute.path: HomeScreenRoute.of,
       },
       navigatorKey: AppNavigator.navigatorKey,
       initialRoute: LoginScreenRoute.path,
