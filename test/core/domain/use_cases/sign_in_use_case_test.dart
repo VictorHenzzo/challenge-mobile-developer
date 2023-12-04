@@ -1,22 +1,23 @@
 import 'package:challenge_mobile_developer/core/data/models/user_model.dart';
 import 'package:challenge_mobile_developer/core/domain/entities/user_entity.dart';
-import 'package:challenge_mobile_developer/core/domain/repositories/user_repository.dart';
 import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart';
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
 import 'package:challenge_mobile_developer/core/infra/erros/app_error.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../spies.dart';
+
 void main() {
   late SignInUseCase sut;
-  late _UserRepositorySpy repository;
+  late AuthRepositorySpy repository;
 
   late String password;
   late String email;
   late UserEntity user;
 
   setUp(() {
-    repository = _UserRepositorySpy();
+    repository = AuthRepositorySpy();
     sut = SignInUseCaseImpl(repository);
 
     password = 'password';
@@ -83,5 +84,3 @@ void main() {
     expect(result.errorOrNull, isA<AppError>());
   });
 }
-
-class _UserRepositorySpy extends Mock implements UserRepository {}

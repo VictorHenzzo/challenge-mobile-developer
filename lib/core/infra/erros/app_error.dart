@@ -9,11 +9,11 @@ class AppError extends Equatable implements Exception {
   factory AppError.empty() {
     return AppError(
       stackTrace: StackTrace.current,
-      message: '',
+      message: null,
     );
   }
 
-  final String message;
+  final String? message;
   final StackTrace stackTrace;
 
   @override
