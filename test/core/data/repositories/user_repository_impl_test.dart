@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart';
 import 'package:challenge_mobile_developer/core/data/models/user_model.dart';
 import 'package:challenge_mobile_developer/core/data/repositories/user_repository_impl.dart';
@@ -15,11 +17,17 @@ void main() {
   late LocalDataSourceSpy localDataSource;
 
   late String body;
+  late UserModel expectedUser;
 
   setUp(() {
     httpDataSource = HttpDataSourceSpy();
     localDataSource = LocalDataSourceSpy();
     sut = UserRepositoryImpl(httpDataSource, localDataSource);
+
+    body =
+        '{"createdAt":"2023-11-02T18:54:47.981Z","email":"joao@gmail.com","token":"cb15fbdff6ad7fe1604fee7d","password":"123456","id":"1"}';
+
+    expectedUser = UserModel.fromJson(jsonDecode(body));
 
     registerFallbackValue(HttpMethod.get);
   });
@@ -56,9 +64,6 @@ void main() {
     setUp(() {
       email = 'mail@mail.example';
       password = 'password';
-
-      body =
-          '{"createdAt":"2023-11-02T18:54:47.981Z","email":"joao@gmail.com","token":"cb15fbdff6ad7fe1604fee7d","password":"123456","id":"1"}';
     });
 
     test(
@@ -102,13 +107,6 @@ void main() {
       final result = await sut.signIn(email: email, password: password);
 
       // assert
-      final expectedUser = UserModel(
-        createdAt: DateTime.parse('2023-11-02T18:54:47.981Z'),
-        email: 'joao@gmail.com',
-        token: 'cb15fbdff6ad7fe1604fee7d',
-        password: '123456',
-        id: '1',
-      );
 
       expect(result.valueOrNull, expectedUser);
     });
@@ -153,8 +151,6 @@ void main() {
 
     setUp(() {
       userId = 'userId';
-      body =
-          '{"createdAt":"2023-11-02T18:54:47.981Z","email":"joao@gmail.com","token":"cb15fbdff6ad7fe1604fee7d","password":"123456","id":"1"}';
     });
 
     test('Should be able to call httpDataSource with the correct values',
@@ -184,13 +180,6 @@ void main() {
       final result = await sut.getUserById(userId);
 
       // assert
-      final expectedUser = UserModel(
-        createdAt: DateTime.parse('2023-11-02T18:54:47.981Z'),
-        email: 'joao@gmail.com',
-        token: 'cb15fbdff6ad7fe1604fee7d',
-        password: '123456',
-        id: '1',
-      );
 
       expect(result.valueOrNull, expectedUser);
     });
@@ -207,6 +196,73 @@ void main() {
 
       // act
       final result = await sut.getUserById(userId);
+
+      // assert
+      expect(result.errorOrNull, isA<AppError>());
+    });
+  });
+
+  group('getUserFromLocal', () {
+    void mockLocalDataSourceFetch(
+      final Either<AppError, String?> result,
+    ) {
+      when(
+        () => localDataSource.fetch(
+          key: any(named: 'key'),
+        ),
+      ).thenAnswer(
+        (final _) async => result,
+      );
+    }
+
+    test('Should be able to call localDataSource with the correct values',
+        () async {
+      // arrange
+      mockLocalDataSourceFetch(Success(body));
+
+      // act
+      await sut.getUserFromLocal();
+
+      // assert
+      verify(
+        () => localDataSource.fetch(
+          key: UserModel.cacheKey,
+        ),
+      ).called(1);
+    });
+
+    test('Should be able to return a UserEntity on Success', () async {
+      // arrange
+      mockLocalDataSourceFetch(Success(body));
+
+      // act
+      final result = await sut.getUserFromLocal();
+
+      // assert
+      expect(result.valueOrNull, expectedUser);
+    });
+
+    test('Should be able to return null if localDataSource returns null',
+        () async {
+      // arrange
+      mockLocalDataSourceFetch(const Success(null));
+
+      // act
+      final result = await sut.getUserFromLocal();
+
+      // assert
+      expect(result.valueOrNull, null);
+      expect(result.errorOrNull, null);
+    });
+
+    test(
+        'Should be able to return a AppError if localDataSource returns AppError',
+        () async {
+      // arrange
+      mockLocalDataSourceFetch(Failure(AppError.empty()));
+
+      // act
+      final result = await sut.getUserFromLocal();
 
       // assert
       expect(result.errorOrNull, isA<AppError>());

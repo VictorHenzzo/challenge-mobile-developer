@@ -80,9 +80,21 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<AppError, UserEntity?>> getUserFromLocal() {
-    // TODO: implement getUserFromLocal
-    throw UnimplementedError();
+  Future<Either<AppError, UserEntity?>> getUserFromLocal() async {
+    final result = await localDataSource.fetch(key: UserModel.cacheKey);
+
+    if (result.hasError) {
+      return Failure(result.errorOrNull!);
+    }
+
+    final rawUser = result.valueOrNull;
+
+    if (rawUser == null) {
+      return const Success(null);
+    }
+
+    final user = _userFromEncodedString(rawUser);
+    return Success(user);
   }
 
   UserEntity _userFromEncodedString(final String body) {
