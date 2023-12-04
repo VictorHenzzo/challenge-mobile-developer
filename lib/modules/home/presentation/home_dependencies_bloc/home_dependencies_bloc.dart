@@ -15,10 +15,28 @@ class HomeDependenciesBloc
   HomeDependenciesBloc({
     required this.fetchStudentsUseCase,
   }) : super(const HomeDependenciesInitialState()) {
-    on<HomeDependenciesEvent>((final event, final emit) {});
+    on<HomeDependenciesFetchEvent>(_onHomeDependenciesFetchEvent);
   }
 
   final FetchStudentsUseCase fetchStudentsUseCase;
+
+  Future<void> _onHomeDependenciesFetchEvent(
+    final HomeDependenciesFetchEvent event,
+    final Emitter<HomeDependenciesState> emit,
+  ) async {
+    emit(const HomeDependenciesLoadingState());
+
+    final result = await fetchStudentsUseCase.fetchStudents();
+
+    result.fold(
+      onError: (final _) => emit(
+        const HomeDependenciesErrorState(),
+      ),
+      onSuccess: (final _) => emit(
+        HomeDependenciesLoadedState(result.valueOrNull!),
+      ),
+    );
+  }
 
   @override
   void addEvent(final HomeDependenciesEvent event) {
