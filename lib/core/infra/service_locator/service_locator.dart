@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import 'service_locator.config.dart';
+import 'package:challenge_mobile_developer/core/infra/service_locator/service_locator.config.dart';
 
 @InjectableInit()
 class ServiceLocator {

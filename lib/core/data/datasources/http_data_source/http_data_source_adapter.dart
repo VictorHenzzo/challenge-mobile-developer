@@ -14,8 +14,8 @@ final class HttpDataSourceAdapter implements HttpDataSource {
 
   @override
   Future<HttpResponse> request({
-    required String url,
-    required HttpMethod method,
+    required final String url,
+    required final HttpMethod method,
     final Map<String, dynamic>? body,
   }) async {
     final uri = Uri.parse(_baseUrl + url);
@@ -31,7 +31,7 @@ final class HttpDataSourceAdapter implements HttpDataSource {
 
   Future<http.Response> _handleRequest({
     required final Uri url,
-    required HttpMethod method,
+    required final HttpMethod method,
     required final Map<String, dynamic>? body,
   }) async {
     switch (method) {
