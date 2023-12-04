@@ -5,6 +5,6 @@ import 'package:mocktail/mocktail.dart';
 
 class HttpDataSourceSpy extends Mock implements HttpDataSource {}
 
-class AuthRepositorySpy extends Mock implements UserRepository {}
+class UserRepositorySpy extends Mock implements UserRepository {}
 
 class LocalDataSourceSpy extends Mock implements LocalDataSource {}

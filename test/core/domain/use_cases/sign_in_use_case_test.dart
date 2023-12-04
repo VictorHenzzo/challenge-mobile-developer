@@ -10,14 +10,14 @@ import '../../../spies.dart';
 
 void main() {
   late SignInUseCase sut;
-  late AuthRepositorySpy repository;
+  late UserRepositorySpy repository;
 
   late String password;
   late String email;
   late UserEntity user;
 
   setUp(() {
-    repository = AuthRepositorySpy();
+    repository = UserRepositorySpy();
     sut = SignInUseCaseImpl(repository);
 
     password = 'password';
