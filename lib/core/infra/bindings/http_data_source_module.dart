@@ -1,5 +1,5 @@
-import 'package:challenge_mobile_developer/core/data/datasources/http_data_source.dart';
-import 'package:challenge_mobile_developer/core/data/datasources/http_data_source_adapter.dart';
+import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart';
+import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart';
 

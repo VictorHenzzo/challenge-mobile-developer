@@ -1,5 +1,5 @@
-import 'package:challenge_mobile_developer/core/data/datasources/http_data_source.dart';
-import 'package:challenge_mobile_developer/core/data/datasources/http_data_source_adapter.dart';
+import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart';
+import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart';
 import 'package:challenge_mobile_developer/core/infra/environment/environment_config.dart';
 import 'package:challenge_mobile_developer/core/infra/erros/http_error.dart';
 import 'package:flutter_test/flutter_test.dart';

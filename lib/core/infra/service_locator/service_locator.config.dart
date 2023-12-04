@@ -8,9 +8,9 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:challenge_mobile_developer/core/data/datasources/http_data_source.dart'
+import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart'
     as _i4;
-import 'package:challenge_mobile_developer/core/data/datasources/http_data_source_adapter.dart'
+import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart'
     as _i5;
 import 'package:challenge_mobile_developer/core/infra/bindings/http_data_source_module.dart'
     as _i6;
