@@ -40,6 +40,7 @@ dependencies:
   equatable: ^2.0.5
   http: ^1.1.2
   shared_preferences: ^2.2.2
+  bloc: ^8.1.2
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +48,7 @@ dev_dependencies:
   injectable_generator: ^2.4.1
   build_runner: ^2.4.7
   mocktail: ^1.0.1
+  bloc_test: ^9.1.5
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
