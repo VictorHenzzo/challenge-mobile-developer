@@ -13,29 +13,37 @@ import 'package:challenge_mobile_developer/core/data/datasources/http_data_sourc
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart'
     as _i5;
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/local_data_source.dart'
-    as _i9;
+    as _i10;
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/shared_preferences_local_data_source.dart'
     as _i8;
+import 'package:challenge_mobile_developer/core/data/repositories/students_repository_impl.dart'
+    as _i9;
 import 'package:challenge_mobile_developer/core/data/repositories/user_repository_impl.dart'
-    as _i10;
-import 'package:challenge_mobile_developer/core/domain/repositories/user_repository.dart'
-    as _i11;
-import 'package:challenge_mobile_developer/core/domain/use_cases/check_auth_state_use_case.dart'
     as _i12;
-import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart'
+import 'package:challenge_mobile_developer/core/domain/repositories/students_repository.dart'
+    as _i11;
+import 'package:challenge_mobile_developer/core/domain/repositories/user_repository.dart'
+    as _i14;
+import 'package:challenge_mobile_developer/core/domain/use_cases/check_auth_state_use_case.dart'
+    as _i15;
+import 'package:challenge_mobile_developer/core/domain/use_cases/fetch_students_use_case.dart'
     as _i13;
-import 'package:challenge_mobile_developer/core/infra/bindings/http_data_source_module.dart'
+import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart'
     as _i16;
+import 'package:challenge_mobile_developer/core/infra/bindings/http_data_source_module.dart'
+    as _i19;
 import 'package:challenge_mobile_developer/core/infra/bindings/local_data_source_module.dart'
-    as _i17;
+    as _i20;
+import 'package:challenge_mobile_developer/core/infra/bindings/students_module.dart'
+    as _i21;
 import 'package:challenge_mobile_developer/core/infra/bindings/user_module.dart'
-    as _i18;
+    as _i22;
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_directions.dart'
     as _i6;
 import 'package:challenge_mobile_developer/modules/login/presentation/bloc/login_bloc.dart'
-    as _i15;
+    as _i18;
 import 'package:challenge_mobile_developer/modules/login/presentation/login_presenter.dart'
-    as _i14;
+    as _i17;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:http/http.dart' as _i3;
 import 'package:injectable/injectable.dart' as _i2;
@@ -54,6 +62,7 @@ extension GetItInjectableX on _i1.GetIt {
     );
     final httpDataSourceModule = _$HttpDataSourceModule();
     final localDataSourceModule = _$LocalDataSourceModule();
+    final studentsModule = _$StudentsModule();
     final authModule = _$AuthModule();
     gh.factory<_i3.Client>(() => httpDataSourceModule.client);
     gh.factory<_i4.HttpDataSource>(() => httpDataSourceModule.httpDataSource());
@@ -67,33 +76,43 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i8.SharedPreferencesLocalDataSource>(() =>
         _i8.SharedPreferencesLocalDataSource(
             sharedPreferences: gh<_i7.SharedPreferences>()));
-    gh.factory<_i9.LocalDataSource>(() => localDataSourceModule
+    gh.factory<_i9.StudentsRepositoryImpl>(
+        () => _i9.StudentsRepositoryImpl(gh<_i4.HttpDataSource>()));
+    gh.factory<_i10.LocalDataSource>(() => localDataSourceModule
         .localDataSource(gh<_i8.SharedPreferencesLocalDataSource>()));
-    gh.factory<_i10.UserRepositoryImpl>(() => _i10.UserRepositoryImpl(
+    gh.factory<_i11.StudentsRepository>(() =>
+        studentsModule.studentsRepository(gh<_i9.StudentsRepositoryImpl>()));
+    gh.factory<_i12.UserRepositoryImpl>(() => _i12.UserRepositoryImpl(
           gh<_i4.HttpDataSource>(),
-          gh<_i9.LocalDataSource>(),
+          gh<_i10.LocalDataSource>(),
         ));
-    gh.factory<_i11.UserRepository>(
-        () => authModule.authRepository(gh<_i10.UserRepositoryImpl>()));
-    gh.factory<_i12.CheckAuthStateUseCaseImpl>(
-        () => _i12.CheckAuthStateUseCaseImpl(gh<_i11.UserRepository>()));
-    gh.factory<_i13.SignInUseCaseImpl>(
-        () => _i13.SignInUseCaseImpl(gh<_i11.UserRepository>()));
-    gh.factory<_i12.CheckAuthStateUseCase>(() =>
-        authModule.checkAuthStateUseCase(gh<_i12.CheckAuthStateUseCaseImpl>()));
-    gh.factory<_i13.SignInUseCase>(
-        () => authModule.signInUseCase(gh<_i13.SignInUseCaseImpl>()));
-    gh.factory<_i14.LoginPresenter>(() => _i15.LoginBloc(
-          checkAuthStateUseCase: gh<_i12.CheckAuthStateUseCase>(),
-          signInUseCase: gh<_i13.SignInUseCase>(),
+    gh.factory<_i13.FetchStudentsUseCaseImpl>(
+        () => _i13.FetchStudentsUseCaseImpl(gh<_i11.StudentsRepository>()));
+    gh.factory<_i14.UserRepository>(
+        () => authModule.authRepository(gh<_i12.UserRepositoryImpl>()));
+    gh.factory<_i15.CheckAuthStateUseCaseImpl>(
+        () => _i15.CheckAuthStateUseCaseImpl(gh<_i14.UserRepository>()));
+    gh.factory<_i13.FetchStudentsUseCase>(() => studentsModule
+        .fetchStudentsUseCase(gh<_i13.FetchStudentsUseCaseImpl>()));
+    gh.factory<_i16.SignInUseCaseImpl>(
+        () => _i16.SignInUseCaseImpl(gh<_i14.UserRepository>()));
+    gh.factory<_i15.CheckAuthStateUseCase>(() =>
+        authModule.checkAuthStateUseCase(gh<_i15.CheckAuthStateUseCaseImpl>()));
+    gh.factory<_i16.SignInUseCase>(
+        () => authModule.signInUseCase(gh<_i16.SignInUseCaseImpl>()));
+    gh.factory<_i17.LoginPresenter>(() => _i18.LoginBloc(
+          checkAuthStateUseCase: gh<_i15.CheckAuthStateUseCase>(),
+          signInUseCase: gh<_i16.SignInUseCase>(),
           directions: gh<_i6.LoginScreenDirections>(),
         ));
     return this;
   }
 }
 
-class _$HttpDataSourceModule extends _i16.HttpDataSourceModule {}
+class _$HttpDataSourceModule extends _i19.HttpDataSourceModule {}
 
-class _$LocalDataSourceModule extends _i17.LocalDataSourceModule {}
+class _$LocalDataSourceModule extends _i20.LocalDataSourceModule {}
 
-class _$AuthModule extends _i18.AuthModule {}
+class _$StudentsModule extends _i21.StudentsModule {}
+
+class _$AuthModule extends _i22.AuthModule {}

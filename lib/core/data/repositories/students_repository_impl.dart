@@ -7,7 +7,9 @@ import 'package:challenge_mobile_developer/core/domain/repositories/students_rep
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
 import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
 import 'package:challenge_mobile_developer/core/infra/errors/http_error.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class StudentsRepositoryImpl implements StudentsRepository {
   StudentsRepositoryImpl(this.httpDataSource);
 
