@@ -9,7 +9,7 @@ class ServiceLocator {
 
   GetIt get _getIt => GetIt.instance;
 
-  void configureDependencies() => _getIt.init();
+  Future<void> configureDependencies() => _getIt.init();
 
   T get<T extends Object>() {
     return _getIt.get<T>();
