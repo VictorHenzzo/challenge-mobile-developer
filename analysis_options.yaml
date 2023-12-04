@@ -21,7 +21,6 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    rules:
 
     # Error rules
     always_use_package_imports: true
@@ -78,7 +77,6 @@ linter:
     unnecessary_await_in_return: true
     unnecessary_const: true
     unnecessary_constructor_name: true
-    unnecessary_final: true
     unnecessary_getters_setters: true
     unnecessary_lambdas: true
     unnecessary_new: true
