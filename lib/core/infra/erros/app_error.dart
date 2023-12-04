@@ -6,6 +6,13 @@ class AppError extends Equatable implements Exception {
     required this.message,
   });
 
+  factory AppError.empty() {
+    return AppError(
+      stackTrace: StackTrace.current,
+      message: '',
+    );
+  }
+
   final String message;
   final StackTrace stackTrace;
 

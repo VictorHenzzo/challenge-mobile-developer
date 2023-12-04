@@ -19,6 +19,16 @@ class UserModel extends UserEntity {
     );
   }
 
+  factory UserModel.empty() {
+    return UserModel(
+      createdAt: DateTime.now(),
+      email: '',
+      token: '',
+      password: '',
+      id: '',
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'createdAt': createdAt.toIso8601String(),
