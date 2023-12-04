@@ -28,7 +28,6 @@ linter:
     avoid_dynamic_calls: true
     avoid_empty_else: true
     avoid_print: true
-    prefer_relative_imports: false
     test_types_in_equals: true
     unnecessary_statements: true
     unrelated_type_equality_checks: true
@@ -38,7 +37,6 @@ linter:
     annotate_overrides: true
     avoid_annotating_with_dynamic: true
     avoid_bool_literals_in_conditional_expressions: true
-    avoid_catches_without_on_clauses: false
     avoid_field_initializers_in_const_classes: true
     avoid_function_literals_in_foreach_calls: true
     avoid_positional_boolean_parameters: true
@@ -80,7 +78,7 @@ linter:
     unnecessary_await_in_return: true
     unnecessary_const: true
     unnecessary_constructor_name: true
-    unnecessary_final: false
+    unnecessary_final: true
     unnecessary_getters_setters: true
     unnecessary_lambdas: true
     unnecessary_new: true
