@@ -10,8 +10,8 @@ sealed class Either<E extends Exception, S> extends Equatable {
   E? get errorOrNull;
 
   void fold({
-    required final Function(E error) onError,
-    required final Function(S success) onSuccess,
+    required final void Function(E error) onError,
+    required final void Function(S success) onSuccess,
   });
 }
 
