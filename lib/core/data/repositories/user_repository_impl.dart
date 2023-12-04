@@ -6,8 +6,8 @@ import 'package:challenge_mobile_developer/core/data/models/user_model.dart';
 import 'package:challenge_mobile_developer/core/domain/entities/user_entity.dart';
 import 'package:challenge_mobile_developer/core/domain/repositories/user_repository.dart';
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
-import 'package:challenge_mobile_developer/core/infra/erros/app_error.dart';
-import 'package:challenge_mobile_developer/core/infra/erros/http_error.dart';
+import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
+import 'package:challenge_mobile_developer/core/infra/errors/http_error.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

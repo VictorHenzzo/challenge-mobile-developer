@@ -4,7 +4,7 @@ import 'package:challenge_mobile_developer/core/domain/entities/user_entity.dart
 import 'package:challenge_mobile_developer/core/domain/use_cases/check_auth_state_use_case.dart';
 import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart';
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
-import 'package:challenge_mobile_developer/core/infra/erros/app_error.dart';
+import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_directions.dart';
 import 'package:challenge_mobile_developer/modules/login/presentation/bloc/login_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

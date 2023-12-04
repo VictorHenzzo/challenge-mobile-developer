@@ -4,8 +4,8 @@ import 'package:challenge_mobile_developer/core/data/datasources/http_data_sourc
 import 'package:challenge_mobile_developer/core/data/models/user_model.dart';
 import 'package:challenge_mobile_developer/core/data/repositories/user_repository_impl.dart';
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
-import 'package:challenge_mobile_developer/core/infra/erros/app_error.dart';
-import 'package:challenge_mobile_developer/core/infra/erros/http_error.dart';
+import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
+import 'package:challenge_mobile_developer/core/infra/errors/http_error.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

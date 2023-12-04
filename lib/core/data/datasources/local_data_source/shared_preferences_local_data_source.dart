@@ -1,5 +1,5 @@
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
-import 'package:challenge_mobile_developer/core/infra/erros/app_error.dart';
+import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/local_data_source.dart';
