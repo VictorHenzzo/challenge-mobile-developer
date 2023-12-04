@@ -6,15 +6,17 @@ class StudentModel extends StudentEntity {
     required super.name,
     required super.email,
     required super.birthdate,
+    required super.createdAt,
     required super.cpf,
   });
 
   factory StudentModel.fromJson(final Map<String, dynamic> json) {
     return StudentModel(
-      academicRecord: json['academicRecord'],
+      academicRecord: json['academic_record'],
       name: json['name'],
       email: json['email'],
       birthdate: DateTime.parse(json['birthdate']),
+      createdAt: DateTime.parse(json['createdAt']),
       cpf: json['cpf'],
     );
   }
@@ -25,6 +27,7 @@ class StudentModel extends StudentEntity {
       name: '',
       email: '',
       birthdate: DateTime.now(),
+      createdAt: DateTime.now(),
       cpf: '',
     );
   }
