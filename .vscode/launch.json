@@ -10,7 +10,7 @@
             "type": "dart",
             "args": [
                 "--dart-define=BASE_URL=https://653c0826d5d6790f5ec7c664.mockapi.io/api/v1",
-            ]
+            ],
         },
         {
             "name": "challenge-mobile-developer (profile mode)",
@@ -29,6 +29,15 @@
             "args": [
                 "--dart-define=BASE_URL=https://653c0826d5d6790f5ec7c664.mockapi.io/api/v1",
             ]
-        }
+        },
+        {
+            "name": "Run all tests",
+            "request": "launch",
+            "type": "dart",
+            "program": "test/",
+            "toolArgs": [
+                "--dart-define=BASE_URL=https://test.com/api",
+            ]
+        },
     ]
 }
