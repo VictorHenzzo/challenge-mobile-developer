@@ -13,7 +13,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> implements LoginPresenter {
     required this.checkAuthStateUseCase,
     required this.signInUseCase,
     required this.directions,
-  }) : super(const LoginLoadingState()) {}
+  }) : super(const LoginLoadingState()) {
+    on<CheckAuthStatusEvent>(_onCheckAuthStatusEvent);
+  }
+
+  Future<void> _onCheckAuthStatusEvent(
+    final CheckAuthStatusEvent event,
+    final Emitter<LoginState> emit,
+  ) async {
+    emit(const LoginCheckingAuthState());
+
+    final authStatus = await checkAuthStateUseCase.check();
+
+    switch (authStatus) {
+      case AuthState.authenticated:
+        return directions.goToHome();
+      case AuthState.none:
+        emit(const LoginLoadedState());
+    }
+  }
 
   final CheckAuthStateUseCase checkAuthStateUseCase;
   final SignInUseCase signInUseCase;
