@@ -14,6 +14,8 @@ void main() {
   late HttpDataSourceSpy httpDataSource;
   late LocalDataSourceSpy localDataSource;
 
+  late String body;
+
   setUp(() {
     httpDataSource = HttpDataSourceSpy();
     localDataSource = LocalDataSourceSpy();
@@ -50,7 +52,6 @@ void main() {
   group('SignIn', () {
     late String email;
     late String password;
-    late String body;
 
     setUp(() {
       email = 'mail@mail.example';
@@ -141,6 +142,71 @@ void main() {
 
       // act
       final result = await sut.signIn(email: email, password: password);
+
+      // assert
+      expect(result.errorOrNull, isA<AppError>());
+    });
+  });
+
+  group('getUserById', () {
+    late String userId;
+
+    setUp(() {
+      userId = 'userId';
+      body =
+          '{"createdAt":"2023-11-02T18:54:47.981Z","email":"joao@gmail.com","token":"cb15fbdff6ad7fe1604fee7d","password":"123456","id":"1"}';
+    });
+
+    test('Should be able to call httpDataSource with the correct values',
+        () async {
+      // arrange
+      mockHttpDataSource(HttpResponse(body: body, statusCode: 200));
+
+      // act
+      await sut.getUserById(userId);
+
+      // assert
+      verify(
+        () => httpDataSource.request(
+          url: '/login/$userId',
+          method: HttpMethod.get,
+        ),
+      ).called(1);
+
+      verifyNoMoreInteractions(httpDataSource);
+    });
+
+    test('Should be able to return a UserEntity on Success', () async {
+      // arrange
+      mockHttpDataSource(HttpResponse(body: body, statusCode: 200));
+
+      // act
+      final result = await sut.getUserById(userId);
+
+      // assert
+      final expectedUser = UserModel(
+        createdAt: DateTime.parse('2023-11-02T18:54:47.981Z'),
+        email: 'joao@gmail.com',
+        token: 'cb15fbdff6ad7fe1604fee7d',
+        password: '123456',
+        id: '1',
+      );
+
+      expect(result.valueOrNull, expectedUser);
+    });
+
+    test('Should be able to return a AppError on httpError', () async {
+      // arrange
+      when(
+        () => httpDataSource.request(
+          url: any(named: 'url'),
+          method: any(named: 'method'),
+          body: any(named: 'body'),
+        ),
+      ).thenThrow(const ServerError());
+
+      // act
+      final result = await sut.getUserById(userId);
 
       // assert
       expect(result.errorOrNull, isA<AppError>());

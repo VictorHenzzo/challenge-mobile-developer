@@ -34,8 +34,7 @@ final class UserRepositoryImpl implements UserRepository {
         },
       );
 
-      final json = jsonDecode(response.body);
-      final user = UserModel.fromJson(json);
+      final user = _userFromEncodedString(response.body);
 
       final result = await localDataSource.save(
         key: UserModel.cacheKey,
@@ -55,5 +54,39 @@ final class UserRepositoryImpl implements UserRepository {
         ),
       );
     }
+  }
+
+  @override
+  Future<Either<AppError, UserEntity>> getUserById(
+    final String id,
+  ) async {
+    try {
+      final response = await httpDataSource.request(
+        url: '$loginEndpoint/$id',
+        method: HttpMethod.get,
+      );
+
+      final user = _userFromEncodedString(response.body);
+
+      return Success(user);
+    } on HttpError catch (exception, stackTrace) {
+      return Failure(
+        AppError(
+          stackTrace: stackTrace,
+          message: exception.message,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppError, UserEntity?>> getUserFromLocal() {
+    // TODO: implement getUserFromLocal
+    throw UnimplementedError();
+  }
+
+  UserEntity _userFromEncodedString(final String body) {
+    final json = jsonDecode(body);
+    return UserModel.fromJson(json);
   }
 }

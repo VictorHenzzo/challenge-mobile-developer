@@ -7,4 +7,10 @@ abstract class UserRepository {
     required final String email,
     required final String password,
   });
+
+  Future<Either<AppError, UserEntity?>> getUserFromLocal();
+
+  Future<Either<AppError, UserEntity>> getUserById(
+    final String id,
+  );
 }
