@@ -13,11 +13,11 @@ import 'package:challenge_mobile_developer/core/data/datasources/http_data_sourc
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart'
     as _i5;
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/local_data_source.dart'
-    as _i9;
+    as _i8;
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/shared_preferences_local_data_source.dart'
     as _i7;
 import 'package:challenge_mobile_developer/core/data/repositories/auth_repository_impl.dart'
-    as _i8;
+    as _i9;
 import 'package:challenge_mobile_developer/core/domain/repositories/auth_repository.dart'
     as _i10;
 import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart'
@@ -58,12 +58,14 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i7.SharedPreferencesLocalDataSource>(() =>
         _i7.SharedPreferencesLocalDataSource(
             sharedPreferences: gh<_i6.SharedPreferences>()));
-    gh.factory<_i8.AuthRepositoryImpl>(
-        () => _i8.AuthRepositoryImpl(gh<_i4.HttpDataSource>()));
-    gh.factory<_i9.LocalDataSource>(() => localDataSourceModule
+    gh.factory<_i8.LocalDataSource>(() => localDataSourceModule
         .localDataSource(gh<_i7.SharedPreferencesLocalDataSource>()));
+    gh.factory<_i9.AuthRepositoryImpl>(() => _i9.AuthRepositoryImpl(
+          gh<_i4.HttpDataSource>(),
+          gh<_i8.LocalDataSource>(),
+        ));
     gh.factory<_i10.AuthRepository>(
-        () => authModule.authRepository(gh<_i8.AuthRepositoryImpl>()));
+        () => authModule.authRepository(gh<_i9.AuthRepositoryImpl>()));
     gh.factory<_i11.SignInUseCaseImpl>(
         () => _i11.SignInUseCaseImpl(gh<_i10.AuthRepository>()));
     gh.factory<_i11.SignInUseCase>(

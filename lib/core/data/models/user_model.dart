@@ -38,4 +38,6 @@ class UserModel extends UserEntity {
       'id': id,
     };
   }
+
+  static const String cacheKey = 'userModel';
 }

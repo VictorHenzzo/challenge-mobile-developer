@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart';
+import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/local_data_source.dart';
 import 'package:challenge_mobile_developer/core/data/models/user_model.dart';
 import 'package:challenge_mobile_developer/core/domain/entities/user_entity.dart';
 import 'package:challenge_mobile_developer/core/domain/repositories/auth_repository.dart';
@@ -11,9 +12,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 final class AuthRepositoryImpl implements AuthRepository {
-  AuthRepositoryImpl(this.httpDataSource);
+  AuthRepositoryImpl(this.httpDataSource, this.localDataSource);
 
   final HttpDataSource httpDataSource;
+  final LocalDataSource localDataSource;
 
   static const String loginEndpoint = '/login';
 
@@ -34,6 +36,15 @@ final class AuthRepositoryImpl implements AuthRepository {
 
       final json = jsonDecode(response.body);
       final user = UserModel.fromJson(json);
+
+      final result = await localDataSource.save(
+        key: UserModel.cacheKey,
+        value: response.body,
+      );
+
+      if (result.hasError) {
+        return Failure(result.errorOrNull!);
+      }
 
       return Success(user);
     } on HttpError catch (exception, stackTrace) {
