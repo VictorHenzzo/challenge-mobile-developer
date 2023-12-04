@@ -4,10 +4,12 @@ import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_cas
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_directions.dart';
 import 'package:challenge_mobile_developer/modules/login/presentation/login_presenter.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
+@Injectable(as: LoginPresenter)
 class LoginBloc extends Bloc<LoginEvent, LoginState> implements LoginPresenter {
   LoginBloc({
     required this.checkAuthStateUseCase,
