@@ -19,11 +19,21 @@ class LoginScreen extends StatelessWidget {
   }
 
   final LoginPresenter presenter;
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(final BuildContext context) {
+    final passwordController = TextEditingController();
+    final emailController = TextEditingController();
+
     return Scaffold(
-      body: BlocBuilder<LoginBloc, LoginState>(
+      body: BlocConsumer<LoginBloc, LoginState>(
+        listener: (final context, final state) {
+          if (state is LoginErrorState) {
+            _showFailedToSignInSnackBar(context);
+          }
+        },
         builder: (final context, final state) {
           switch (state.runtimeType) {
             case LoginCheckingAuthState:
@@ -32,8 +42,9 @@ class LoginScreen extends StatelessWidget {
             default:
               return _LoginScreenBody(
                 onSignIn: onSignIn,
-                passwordController: TextEditingController(),
-                emailController: TextEditingController(),
+                passwordController: passwordController,
+                emailController: emailController,
+                isLoading: state is LoginLoadingState,
               );
           }
         },
@@ -41,10 +52,27 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  void _showFailedToSignInSnackBar(final BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Ops! Houve um erro com a solicitação',
+        ),
+      ),
+    );
+  }
+
   void onSignIn({
     required final String email,
     required final String password,
-  }) {}
+  }) {
+    presenter.addEvent(
+      RequestLoginEvent(
+        email: email,
+        password: password,
+      ),
+    );
+  }
 }
 
 class _LoginScreenBody extends StatelessWidget {
@@ -52,6 +80,7 @@ class _LoginScreenBody extends StatelessWidget {
     required this.onSignIn,
     required this.emailController,
     required this.passwordController,
+    required this.isLoading,
   }) : super(key: const Key('loginScreenBody'));
 
   final void Function({
@@ -60,6 +89,7 @@ class _LoginScreenBody extends StatelessWidget {
   }) onSignIn;
 
   final formKey = GlobalKey<FormState>();
+  final bool isLoading;
   final TextEditingController emailController;
   final TextEditingController passwordController;
 
@@ -87,12 +117,12 @@ class _LoginScreenBody extends StatelessWidget {
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: onPressed,
+              onPressed: isLoading ? null : onPressed,
               child: const Text('Entrar'),
             ),
             const SizedBox(height: 10),
             OutlinedButton(
-              onPressed: onPressed,
+              onPressed: isLoading ? null : onPressed,
               child: const Text('Cadastrar'),
             ),
             const Spacer(),
@@ -107,5 +137,10 @@ class _LoginScreenBody extends StatelessWidget {
     if (!formIsValid) {
       return;
     }
+
+    onSignIn(
+      email: emailController.text,
+      password: passwordController.text,
+    );
   }
 }
