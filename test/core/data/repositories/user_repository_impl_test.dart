@@ -1,6 +1,6 @@
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart';
 import 'package:challenge_mobile_developer/core/data/models/user_model.dart';
-import 'package:challenge_mobile_developer/core/data/repositories/auth_repository_impl.dart';
+import 'package:challenge_mobile_developer/core/data/repositories/user_repository_impl.dart';
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
 import 'package:challenge_mobile_developer/core/infra/erros/app_error.dart';
 import 'package:challenge_mobile_developer/core/infra/erros/http_error.dart';
@@ -10,14 +10,14 @@ import 'package:mocktail/mocktail.dart';
 import '../../../spies.dart';
 
 void main() {
-  late AuthRepositoryImpl sut;
+  late UserRepositoryImpl sut;
   late HttpDataSourceSpy httpDataSource;
   late LocalDataSourceSpy localDataSource;
 
   setUp(() {
     httpDataSource = HttpDataSourceSpy();
     localDataSource = LocalDataSourceSpy();
-    sut = AuthRepositoryImpl(httpDataSource, localDataSource);
+    sut = UserRepositoryImpl(httpDataSource, localDataSource);
 
     registerFallbackValue(HttpMethod.get);
   });

@@ -16,18 +16,18 @@ import 'package:challenge_mobile_developer/core/data/datasources/local_data_sour
     as _i8;
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/shared_preferences_local_data_source.dart'
     as _i7;
-import 'package:challenge_mobile_developer/core/data/repositories/auth_repository_impl.dart'
+import 'package:challenge_mobile_developer/core/data/repositories/user_repository_impl.dart'
     as _i9;
-import 'package:challenge_mobile_developer/core/domain/repositories/auth_repository.dart'
+import 'package:challenge_mobile_developer/core/domain/repositories/user_repository.dart'
     as _i10;
 import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart'
     as _i11;
-import 'package:challenge_mobile_developer/core/infra/bindings/auth_module.dart'
-    as _i14;
 import 'package:challenge_mobile_developer/core/infra/bindings/http_data_source_module.dart'
     as _i12;
 import 'package:challenge_mobile_developer/core/infra/bindings/local_data_source_module.dart'
     as _i13;
+import 'package:challenge_mobile_developer/core/infra/bindings/user_module.dart'
+    as _i14;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:http/http.dart' as _i3;
 import 'package:injectable/injectable.dart' as _i2;
@@ -60,14 +60,14 @@ extension GetItInjectableX on _i1.GetIt {
             sharedPreferences: gh<_i6.SharedPreferences>()));
     gh.factory<_i8.LocalDataSource>(() => localDataSourceModule
         .localDataSource(gh<_i7.SharedPreferencesLocalDataSource>()));
-    gh.factory<_i9.AuthRepositoryImpl>(() => _i9.AuthRepositoryImpl(
+    gh.factory<_i9.UserRepositoryImpl>(() => _i9.UserRepositoryImpl(
           gh<_i4.HttpDataSource>(),
           gh<_i8.LocalDataSource>(),
         ));
-    gh.factory<_i10.AuthRepository>(
-        () => authModule.authRepository(gh<_i9.AuthRepositoryImpl>()));
+    gh.factory<_i10.UserRepository>(
+        () => authModule.authRepository(gh<_i9.UserRepositoryImpl>()));
     gh.factory<_i11.SignInUseCaseImpl>(
-        () => _i11.SignInUseCaseImpl(gh<_i10.AuthRepository>()));
+        () => _i11.SignInUseCaseImpl(gh<_i10.UserRepository>()));
     gh.factory<_i11.SignInUseCase>(
         () => authModule.signInUseCase(gh<_i11.SignInUseCaseImpl>()));
     return this;
