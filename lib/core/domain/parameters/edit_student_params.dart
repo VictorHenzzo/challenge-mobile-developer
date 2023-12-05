@@ -24,7 +24,7 @@ class EditStudentParams extends Equatable with DateFormatterMixin {
     }
 
     if (birthdate != null) {
-      json['birthdate'] = formatDateToString(birthdate!);
+      json['birthdate'] = dateToYYYYMMDD(birthdate!);
     }
 
     return json;

@@ -19,7 +19,7 @@ class CreateStudentParams extends Equatable with DateFormatterMixin {
   Map<String, dynamic> toJson() => {
         'name': name,
         'email': email,
-        'birthdate': formatDateToString(birthdate),
+        'birthdate': dateToYYYYMMDD(birthdate),
         'academic_record': academicRecord,
         'cpf': cpf,
       };
