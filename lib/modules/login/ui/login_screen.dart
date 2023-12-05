@@ -34,10 +34,6 @@ class LoginScreen extends StatelessWidget {
           if (state is SignInFailedState) {
             _showFailedSignInSnackBar(context);
           }
-
-          if (state is LoginInFailedState) {
-            _showFailedLoginSnackBar(context);
-          }
         },
         builder: (final context, final state) {
           switch (state.runtimeType) {
@@ -62,16 +58,6 @@ class LoginScreen extends StatelessWidget {
       ErrorSnackBar(
         errorMessage:
             'Ops! Houve um erro ao criar a conta. Por favor, tente novamente',
-        theme: Theme.of(context),
-      ),
-    );
-  }
-
-  void _showFailedLoginSnackBar(final BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      ErrorSnackBar(
-        errorMessage:
-            'Ops! Houve um erro ao entrar. Verifique se o email e senha estão corretos',
         theme: Theme.of(context),
       ),
     );

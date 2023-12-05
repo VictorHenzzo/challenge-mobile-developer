@@ -22,7 +22,3 @@ final class LoginLoadingState extends LoginState {
 final class SignInFailedState extends LoginState {
   const SignInFailedState();
 }
-
-final class LoginInFailedState extends LoginState {
-  const LoginInFailedState();
-}
