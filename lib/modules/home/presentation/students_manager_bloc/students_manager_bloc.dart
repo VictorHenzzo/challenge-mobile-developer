@@ -19,6 +19,8 @@ class StudentsManagerBloc
   }) : super(const StudentsManagerInitialState()) {
     on<StudentsManagerDeleteEvent>(_onStudentsManagerDeleteEvent);
     on<StudentsManagerDismissEvent>(_onStudentsManagerDismissEvent);
+    on<GoToCreateStudentEvent>(_onGoToCreateStudentEvent);
+    on<GoToEditStudentEvent>(_onGoToEditStudentEvent);
   }
 
   final DeleteStudentUseCase deleteStudentUseCase;
@@ -45,6 +47,34 @@ class StudentsManagerBloc
     final Emitter<StudentsManagerState> emit,
   ) async {
     directions.dismiss();
+  }
+
+  Future<void> _onGoToCreateStudentEvent(
+    final GoToCreateStudentEvent event,
+    final Emitter<StudentsManagerState> emit,
+  ) async {
+    final student = await directions.toEditStudent();
+
+    if (student == null) {
+      return;
+    }
+
+    emit(StudentsManagerCreatedState(student));
+  }
+
+  Future<void> _onGoToEditStudentEvent(
+    final GoToEditStudentEvent event,
+    final Emitter<StudentsManagerState> emit,
+  ) async {
+    final student = await directions.toEditStudent(
+      student: event.student,
+    );
+
+    if (student == null) {
+      return;
+    }
+
+    emit(StudentsManagerUpdatedState(student));
   }
 
   @override

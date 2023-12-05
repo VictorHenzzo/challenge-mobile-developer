@@ -9,13 +9,13 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart'
-    as _i5;
-import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart'
     as _i6;
+import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart'
+    as _i7;
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/local_data_source.dart'
     as _i12;
 import 'package:challenge_mobile_developer/core/data/datasources/local_data_source/shared_preferences_local_data_source.dart'
-    as _i9;
+    as _i10;
 import 'package:challenge_mobile_developer/core/data/repositories/students_repository_impl.dart'
     as _i11;
 import 'package:challenge_mobile_developer/core/data/repositories/user_repository_impl.dart'
@@ -44,8 +44,14 @@ import 'package:challenge_mobile_developer/core/infra/bindings/students_module.d
     as _i32;
 import 'package:challenge_mobile_developer/core/infra/bindings/user_module.dart'
     as _i33;
-import 'package:challenge_mobile_developer/modules/home/navigation/home_screen_directions.dart'
+import 'package:challenge_mobile_developer/modules/edit_student/navigation/student_edit_directions.dart'
     as _i4;
+import 'package:challenge_mobile_developer/modules/edit_student/presentation/bloc/edit_student_bloc.dart'
+    as _i27;
+import 'package:challenge_mobile_developer/modules/edit_student/presentation/edit_student_presenter.dart'
+    as _i26;
+import 'package:challenge_mobile_developer/modules/home/navigation/home_screen_directions.dart'
+    as _i5;
 import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_bloc/home_dependencies_bloc.dart'
     as _i22;
 import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_presenter.dart'
@@ -55,21 +61,15 @@ import 'package:challenge_mobile_developer/modules/home/presentation/students_ma
 import 'package:challenge_mobile_developer/modules/home/presentation/students_manager_presenter.dart'
     as _i24;
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_directions.dart'
-    as _i7;
+    as _i8;
 import 'package:challenge_mobile_developer/modules/login/presentation/bloc/login_bloc.dart'
     as _i29;
 import 'package:challenge_mobile_developer/modules/login/presentation/login_presenter.dart'
     as _i28;
-import 'package:challenge_mobile_developer/modules/student_edit/edit_student_presenter.dart'
-    as _i26;
-import 'package:challenge_mobile_developer/modules/student_edit/navigation/student_edit_directions.dart'
-    as _i10;
-import 'package:challenge_mobile_developer/modules/student_edit/presentation/bloc/edit_student_bloc.dart'
-    as _i27;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:http/http.dart' as _i3;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:shared_preferences/shared_preferences.dart' as _i8;
+import 'package:shared_preferences/shared_preferences.dart' as _i9;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -87,27 +87,28 @@ extension GetItInjectableX on _i1.GetIt {
     final studentsModule = _$StudentsModule();
     final authModule = _$AuthModule();
     gh.factory<_i3.Client>(() => httpDataSourceModule.client);
-    gh.factory<_i4.HomeScreenDirections>(() => _i4.HomeScreenDirections());
-    gh.factory<_i5.HttpDataSource>(() => httpDataSourceModule.httpDataSource());
-    gh.factory<_i6.HttpDataSourceAdapter>(
-        () => _i6.HttpDataSourceAdapter(gh<_i3.Client>()));
-    gh.factory<_i7.LoginScreenDirections>(() => _i7.LoginScreenDirections());
-    await gh.factoryAsync<_i8.SharedPreferences>(
+    gh.factory<_i4.EditStudentScreenDirections>(
+        () => _i4.EditStudentScreenDirections());
+    gh.factory<_i5.HomeScreenDirections>(() => _i5.HomeScreenDirections());
+    gh.factory<_i6.HttpDataSource>(() => httpDataSourceModule.httpDataSource());
+    gh.factory<_i7.HttpDataSourceAdapter>(
+        () => _i7.HttpDataSourceAdapter(gh<_i3.Client>()));
+    gh.factory<_i8.LoginScreenDirections>(() => _i8.LoginScreenDirections());
+    await gh.factoryAsync<_i9.SharedPreferences>(
       () => localDataSourceModule.sharedPreferences(),
       preResolve: true,
     );
-    gh.factory<_i9.SharedPreferencesLocalDataSource>(() =>
-        _i9.SharedPreferencesLocalDataSource(
-            sharedPreferences: gh<_i8.SharedPreferences>()));
-    gh.factory<_i10.StudentEditDirections>(() => _i10.StudentEditDirections());
+    gh.factory<_i10.SharedPreferencesLocalDataSource>(() =>
+        _i10.SharedPreferencesLocalDataSource(
+            sharedPreferences: gh<_i9.SharedPreferences>()));
     gh.factory<_i11.StudentsRepositoryImpl>(
-        () => _i11.StudentsRepositoryImpl(gh<_i5.HttpDataSource>()));
+        () => _i11.StudentsRepositoryImpl(gh<_i6.HttpDataSource>()));
     gh.factory<_i12.LocalDataSource>(() => localDataSourceModule
-        .localDataSource(gh<_i9.SharedPreferencesLocalDataSource>()));
+        .localDataSource(gh<_i10.SharedPreferencesLocalDataSource>()));
     gh.factory<_i13.StudentsRepository>(() =>
         studentsModule.studentsRepository(gh<_i11.StudentsRepositoryImpl>()));
     gh.factory<_i14.UserRepositoryImpl>(() => _i14.UserRepositoryImpl(
-          gh<_i5.HttpDataSource>(),
+          gh<_i6.HttpDataSource>(),
           gh<_i12.LocalDataSource>(),
         ));
     gh.factory<_i15.CreateStudentUseCaseImpl>(
@@ -136,12 +137,12 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i23.SignInUseCaseImpl(gh<_i19.UserRepository>()));
     gh.factory<_i24.StudentsManagerPresenter>(() => _i25.StudentsManagerBloc(
           deleteStudentUseCase: gh<_i16.DeleteStudentUseCase>(),
-          directions: gh<_i4.HomeScreenDirections>(),
+          directions: gh<_i5.HomeScreenDirections>(),
         ));
     gh.factory<_i20.CheckAuthStateUseCase>(() =>
         authModule.checkAuthStateUseCase(gh<_i20.CheckAuthStateUseCaseImpl>()));
     gh.factory<_i26.EditStudentPresenter>(() => _i27.EditStudentBloc(
-          directions: gh<_i10.StudentEditDirections>(),
+          directions: gh<_i4.EditStudentScreenDirections>(),
           createStudentUseCase: gh<_i15.CreateStudentUseCase>(),
           editStudentUseCase: gh<_i17.EditStudentUseCase>(),
         ));
@@ -150,7 +151,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i28.LoginPresenter>(() => _i29.LoginBloc(
           checkAuthStateUseCase: gh<_i20.CheckAuthStateUseCase>(),
           signInUseCase: gh<_i23.SignInUseCase>(),
-          directions: gh<_i7.LoginScreenDirections>(),
+          directions: gh<_i8.LoginScreenDirections>(),
         ));
     return this;
   }

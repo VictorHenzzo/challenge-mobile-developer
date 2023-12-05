@@ -28,6 +28,14 @@ void main() {
     student = StudentModel.empty();
   });
 
+  void mockDirectionsToEditStudent(final StudentEntity? student) {
+    when(
+      () => directions.toEditStudent(
+        student: any(named: 'student'),
+      ),
+    ).thenAnswer((final _) async => student);
+  }
+
   group('StudentsManagerDeleteEvent', () {
     void mockDeleteUser(
       final Either<AppError, void> result,
@@ -83,6 +91,92 @@ void main() {
       build: () => sut,
       act: (final bloc) => bloc.add(
         const StudentsManagerDismissEvent(),
+      ),
+      expect: () => [],
+    );
+  });
+
+  group('GoToCreateStudentEvent', () {
+    blocTest(
+      'Should call directions.toEditStudent',
+      setUp: () {
+        mockDirectionsToEditStudent(null);
+      },
+      build: () => sut,
+      act: (final bloc) => bloc.add(
+        const GoToCreateStudentEvent(),
+      ),
+      verify: (final _) {
+        verify(() => directions.toEditStudent()).called(1);
+      },
+    );
+
+    blocTest(
+      'If directions.toEditStudent returns a Student, shoud emit StudentsManagerCreatedState',
+      setUp: () {
+        mockDirectionsToEditStudent(student);
+      },
+      build: () => sut,
+      act: (final bloc) => bloc.add(
+        const GoToCreateStudentEvent(),
+      ),
+      expect: () => [
+        StudentsManagerCreatedState(student),
+      ],
+    );
+
+    blocTest(
+      'If directions.toEditStudent returns null, should not emit any events',
+      setUp: () {
+        mockDirectionsToEditStudent(null);
+      },
+      build: () => sut,
+      act: (final bloc) => bloc.add(
+        const GoToCreateStudentEvent(),
+      ),
+      expect: () => [],
+    );
+  });
+
+  group('StudentsManagerUpdatedState', () {
+    blocTest(
+      'Should call directions.toEditStudent',
+      setUp: () {
+        mockDirectionsToEditStudent(null);
+      },
+      build: () => sut,
+      act: (final bloc) => bloc.add(
+        GoToEditStudentEvent(student),
+      ),
+      verify: (final _) {
+        verify(
+          () => directions.toEditStudent(student: student),
+        ).called(1);
+      },
+    );
+
+    blocTest(
+      'If directions.toEditStudent returns a Student, shoud emit StudentsManagerUpdatedState',
+      setUp: () {
+        mockDirectionsToEditStudent(student);
+      },
+      build: () => sut,
+      act: (final bloc) => bloc.add(
+        GoToEditStudentEvent(student),
+      ),
+      expect: () => [
+        StudentsManagerUpdatedState(student),
+      ],
+    );
+
+    blocTest(
+      'If directions.toEditStudent returns null, should not emit any events',
+      setUp: () {
+        mockDirectionsToEditStudent(null);
+      },
+      build: () => sut,
+      act: (final bloc) => bloc.add(
+        GoToEditStudentEvent(student),
       ),
       expect: () => [],
     );

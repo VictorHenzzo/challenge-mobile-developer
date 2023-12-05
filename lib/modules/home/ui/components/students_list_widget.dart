@@ -3,7 +3,9 @@ part of '../home_screen.dart';
 class _StudentsListWidget extends StatelessWidget {
   _StudentsListWidget({
     required final List<StudentEntity> students,
+    required this.createStudent,
     required this.onDeleteTap,
+    required this.editStudent,
   })  : students = List.from(students),
         super(key: const Key('studentsListWidget'));
 
@@ -12,6 +14,8 @@ class _StudentsListWidget extends StatelessWidget {
     required BuildContext context,
     required StudentEntity student,
   }) onDeleteTap;
+  final VoidCallback createStudent;
+  final void Function(StudentEntity) editStudent;
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   AnimatedListState? get _animatedList => _listKey.currentState;
@@ -39,7 +43,7 @@ class _StudentsListWidget extends StatelessWidget {
               return _StudentListTile(
                 student: student,
                 onDelete: () => onDeleteTap(context: context, student: student),
-                onEdit: () {},
+                onEdit: () => editStudent(student),
                 animation: animation,
               );
             },
@@ -49,7 +53,7 @@ class _StudentsListWidget extends StatelessWidget {
             left: screenSize.width * 0.20,
             right: screenSize.width * 0.20,
             child: _AddNewStudentButtonWidget(
-              onPressed: () {},
+              onPressed: createStudent,
             ),
           ),
         ],

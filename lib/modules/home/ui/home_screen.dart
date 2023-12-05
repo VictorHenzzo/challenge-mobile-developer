@@ -40,6 +40,8 @@ class HomeScreen extends StatelessWidget {
               _StudentsListWidget(
                 students: loadedState.students,
                 onDeleteTap: _showDeleteDialog,
+                createStudent: _createStudent,
+                editStudent: _editStudent,
               ),
             (final HomeDependenciesErrorState _) => _HomeScreenErrorWidget(
                 tryAgain: _fetchContent,
@@ -82,6 +84,18 @@ class HomeScreen extends StatelessWidget {
   void _dismiss() {
     studentsManagerPresenter.addEvent(
       const StudentsManagerDismissEvent(),
+    );
+  }
+
+  void _createStudent() {
+    studentsManagerPresenter.addEvent(
+      const GoToCreateStudentEvent(),
+    );
+  }
+
+  void _editStudent(final StudentEntity student) {
+    studentsManagerPresenter.addEvent(
+      GoToEditStudentEvent(student),
     );
   }
 }
