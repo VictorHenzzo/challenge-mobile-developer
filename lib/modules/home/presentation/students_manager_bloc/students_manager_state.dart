@@ -11,8 +11,17 @@ final class StudentsManagerInitialState extends StudentsManagerState {
   const StudentsManagerInitialState();
 }
 
-final class StudentsManagerDeletedState extends StudentsManagerState {
-  const StudentsManagerDeletedState(this.student);
+final class StudentsManagerDeleteSuccessState extends StudentsManagerState {
+  const StudentsManagerDeleteSuccessState(this.student);
+
+  final StudentEntity student;
+
+  @override
+  List<Object> get props => [student];
+}
+
+final class StudentsManagerDeleteFailedState extends StudentsManagerState {
+  const StudentsManagerDeleteFailedState(this.student);
 
   final StudentEntity student;
 
