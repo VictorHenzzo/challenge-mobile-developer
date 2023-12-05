@@ -1,6 +1,7 @@
 import 'package:challenge_mobile_developer/core/domain/entities/student_entity.dart';
 import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_bloc/home_dependencies_bloc.dart';
 import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_presenter.dart';
+import 'package:challenge_mobile_developer/modules/home/presentation/students_manager_bloc/students_manager_bloc.dart';
 import 'package:challenge_mobile_developer/modules/home/presentation/students_manager_presenter.dart';
 import 'package:challenge_mobile_developer/widgets/app_bottom_nav_bar.dart';
 import 'package:challenge_mobile_developer/widgets/custom_loading_widget.dart';
@@ -35,7 +36,8 @@ class HomeScreen extends StatelessWidget {
           return switch (state) {
             (final HomeDependenciesLoadedState loadedState) =>
               _StudentsListWidget(
-                state: loadedState,
+                students: loadedState.students,
+                deleteStudent: _deleteStudent,
               ),
             (final HomeDependenciesErrorState _) => _HomeScreenErrorWidget(
                 tryAgain: _fetchContent,
@@ -50,6 +52,12 @@ class HomeScreen extends StatelessWidget {
   void _fetchContent() {
     dependenciesPresenter.addEvent(
       const HomeDependenciesFetchEvent(),
+    );
+  }
+
+  void _deleteStudent(final StudentEntity student) {
+    studentsManagerPresenter.addEvent(
+      StudentsManagerDeleteEvent(student),
     );
   }
 }

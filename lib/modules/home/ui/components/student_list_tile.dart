@@ -5,11 +5,13 @@ class _StudentListTile extends StatelessWidget {
     required this.student,
     required this.onEdit,
     required this.onDelete,
+    required this.animation,
   });
 
   final StudentEntity student;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+  final Animation<double> animation;
 
   @override
   Widget build(final BuildContext context) {
@@ -24,24 +26,27 @@ class _StudentListTile extends StatelessWidget {
       color: theme.colorScheme.secondary,
     );
 
-    return Card(
-      child: SizedBox(
-        height: screenSize.height * 0.12,
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            children: [
-              Expanded(
-                child: _studentInformation(
-                  titleTextStyle: titleTextStyle,
-                  subtitleTextStyle: subtitleTextStyle,
+    return SizeTransition(
+      sizeFactor: animation,
+      child: Card(
+        child: SizedBox(
+          height: screenSize.height * 0.12,
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _studentInformation(
+                    titleTextStyle: titleTextStyle,
+                    subtitleTextStyle: subtitleTextStyle,
+                  ),
                 ),
-              ),
-              _actionButtons(
-                color: theme.colorScheme.secondary,
-                size: screenSize.height * 0.01,
-              ),
-            ],
+                _actionButtons(
+                  color: theme.colorScheme.secondary,
+                  size: screenSize.height * 0.01,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -85,7 +90,7 @@ class _StudentListTile extends StatelessWidget {
     return Column(
       children: [
         InkWell(
-          onTap: onDelete,
+          onTap: onEdit,
           child: Icon(
             Icons.edit,
             color: color,
@@ -93,7 +98,7 @@ class _StudentListTile extends StatelessWidget {
         ),
         const Spacer(),
         InkWell(
-          onTap: onEdit,
+          onTap: onDelete,
           child: Icon(
             Icons.delete_outline,
             color: color,
