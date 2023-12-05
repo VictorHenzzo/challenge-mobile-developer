@@ -5,6 +5,7 @@ import 'package:challenge_mobile_developer/modules/home/presentation/students_ma
 import 'package:challenge_mobile_developer/modules/home/presentation/students_manager_presenter.dart';
 import 'package:challenge_mobile_developer/widgets/app_bottom_nav_bar.dart';
 import 'package:challenge_mobile_developer/widgets/custom_loading_widget.dart';
+import 'package:challenge_mobile_developer/widgets/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

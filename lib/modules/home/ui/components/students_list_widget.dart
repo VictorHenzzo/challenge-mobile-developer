@@ -57,17 +57,32 @@ class _StudentsListWidget extends StatelessWidget {
     );
   }
 
-  void _listener(final BuildContext _, final StudentsManagerState state) {
-    //TODO Handle states
+  void _listener(final BuildContext context, final StudentsManagerState state) {
     return switch (state) {
       (final StudentsManagerInitialState _) => null,
       (final StudentsManagerDeleteSuccessState state) =>
         removeFromList(state.student),
-      (final StudentsManagerDeleteFailedState _) => null,
+      (final StudentsManagerDeleteFailedState _) => _showErrorSnackBar(
+          context: context,
+          message:
+              'Ops! Houve um erro ao deletar o estudante. Por favor, tente novamente',
+        ),
       (final StudentsManagerCreatedState state) =>
         insertIntoList(state.student),
       (final StudentsManagerUpdatedState _) => null,
     };
+  }
+
+  void _showErrorSnackBar({
+    required final BuildContext context,
+    required final String message,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      ErrorSnackBar(
+        errorMessage: message,
+        theme: Theme.of(context),
+      ),
+    );
   }
 
   void insertIntoList(final StudentEntity student) {
