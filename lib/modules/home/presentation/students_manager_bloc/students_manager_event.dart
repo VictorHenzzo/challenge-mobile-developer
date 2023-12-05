@@ -15,3 +15,7 @@ final class StudentsManagerDeleteEvent extends StudentsManagerEvent {
   @override
   List<Object> get props => [student];
 }
+
+final class StudentsManagerDismissEvent extends StudentsManagerEvent {
+  const StudentsManagerDismissEvent();
+}

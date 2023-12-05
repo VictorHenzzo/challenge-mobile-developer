@@ -71,6 +71,22 @@ void main() {
       expect: () => [StudentsManagerDeleteFailedState(student)],
     );
   });
+
+  group('StudentsManagerDismissEvent', () {
+    blocTest(
+      'Should call directions dismiss',
+      setUp: () {
+        when(directions.dismiss).thenAnswer(
+          (final _) async => _,
+        );
+      },
+      build: () => sut,
+      act: (final bloc) => bloc.add(
+        const StudentsManagerDismissEvent(),
+      ),
+      expect: () => [],
+    );
+  });
 }
 
 class _DeleteStudentUseCaseSpy extends Mock implements DeleteStudentUseCase {}

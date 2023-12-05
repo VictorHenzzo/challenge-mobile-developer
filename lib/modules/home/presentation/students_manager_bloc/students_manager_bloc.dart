@@ -18,7 +18,11 @@ class StudentsManagerBloc
     required this.directions,
   }) : super(const StudentsManagerInitialState()) {
     on<StudentsManagerDeleteEvent>(_onStudentsManagerDeleteEvent);
+    on<StudentsManagerDismissEvent>(_onStudentsManagerDismissEvent);
   }
+
+  final DeleteStudentUseCase deleteStudentUseCase;
+  final HomeScreenDirections directions;
 
   Future<void> _onStudentsManagerDeleteEvent(
     final StudentsManagerDeleteEvent event,
@@ -36,8 +40,12 @@ class StudentsManagerBloc
     );
   }
 
-  final DeleteStudentUseCase deleteStudentUseCase;
-  final HomeScreenDirections directions;
+  Future<void> _onStudentsManagerDismissEvent(
+    final StudentsManagerDismissEvent event,
+    final Emitter<StudentsManagerState> emit,
+  ) async {
+    directions.dismiss();
+  }
 
   @override
   void addEvent(final StudentsManagerEvent event) {
