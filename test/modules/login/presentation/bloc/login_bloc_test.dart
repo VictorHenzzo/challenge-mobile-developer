@@ -88,7 +88,7 @@ void main() {
     );
   });
 
-  group('RequestLoginEvent', () {
+  group('RequestSignInEvent', () {
     void mockSignIn(
       final Either<AppError, UserEntity> result,
     ) {
@@ -107,7 +107,7 @@ void main() {
       },
       build: () => sut,
       act: (final bloc) => bloc.add(
-        RequestLoginEvent(
+        RequestSignInEvent(
           email: email,
           password: password,
         ),
@@ -131,7 +131,7 @@ void main() {
       },
       build: () => sut,
       act: (final bloc) => bloc.add(
-        RequestLoginEvent(
+        RequestSignInEvent(
           email: email,
           password: password,
         ),
@@ -143,13 +143,13 @@ void main() {
     );
 
     blocTest(
-      'Should call emit LoginErrorState if SignInUseCase returns Failure',
+      'Should call emit SignInFailedState if SignInUseCase returns Failure',
       setUp: () {
         mockSignIn(Failure(AppError.empty()));
       },
       build: () => sut,
       act: (final bloc) => bloc.add(
-        RequestLoginEvent(
+        RequestSignInEvent(
           email: email,
           password: password,
         ),
@@ -159,7 +159,7 @@ void main() {
       },
       expect: () => const [
         LoginLoadingState(),
-        LoginErrorState(),
+        SignInFailedState(),
       ],
     );
   });

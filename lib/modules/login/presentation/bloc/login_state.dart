@@ -19,6 +19,10 @@ final class LoginLoadingState extends LoginState {
   const LoginLoadingState();
 }
 
-final class LoginErrorState extends LoginState {
-  const LoginErrorState();
+final class SignInFailedState extends LoginState {
+  const SignInFailedState();
+}
+
+final class LoginInFailedState extends LoginState {
+  const LoginInFailedState();
 }

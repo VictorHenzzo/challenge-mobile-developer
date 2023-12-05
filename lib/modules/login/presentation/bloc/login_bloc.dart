@@ -17,7 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> implements LoginPresenter {
     required this.directions,
   }) : super(const LoginLoadingState()) {
     on<CheckAuthStatusEvent>(_onCheckAuthStatusEvent);
-    on<RequestLoginEvent>(_onRequestLoginEvent);
+    on<RequestSignInEvent>(_onRequestLoginEvent);
   }
 
   Future<void> _onCheckAuthStatusEvent(
@@ -37,7 +37,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> implements LoginPresenter {
   }
 
   Future<void> _onRequestLoginEvent(
-    final RequestLoginEvent event,
+    final RequestSignInEvent event,
     final Emitter<LoginState> emit,
   ) async {
     emit(const LoginLoadingState());
@@ -48,7 +48,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> implements LoginPresenter {
     );
 
     result.fold(
-      onError: (final _) => emit(const LoginErrorState()),
+      onError: (final _) => emit(const SignInFailedState()),
       onSuccess: (final _) => directions.goToHome(),
     );
   }

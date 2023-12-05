@@ -7,8 +7,8 @@ sealed class LoginEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class RequestLoginEvent extends LoginEvent {
-  const RequestLoginEvent({
+final class RequestSignInEvent extends LoginEvent {
+  const RequestSignInEvent({
     required this.email,
     required this.password,
   });

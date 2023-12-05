@@ -4,6 +4,7 @@ import 'package:challenge_mobile_developer/modules/login/presentation/bloc/login
 import 'package:challenge_mobile_developer/modules/login/presentation/login_presenter.dart';
 import 'package:challenge_mobile_developer/shared/assets.dart';
 import 'package:challenge_mobile_developer/widgets/custom_loading_widget.dart';
+import 'package:challenge_mobile_developer/widgets/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,8 +31,12 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (final context, final state) {
-          if (state is LoginErrorState) {
-            _showFailedToSignInSnackBar(context);
+          if (state is SignInFailedState) {
+            _showFailedSignInSnackBar(context);
+          }
+
+          if (state is LoginInFailedState) {
+            _showFailedLoginSnackBar(context);
           }
         },
         builder: (final context, final state) {
@@ -52,12 +57,22 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void _showFailedToSignInSnackBar(final BuildContext context) {
+  void _showFailedSignInSnackBar(final BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Ops! Houve um erro com a solicitação',
-        ),
+      ErrorSnackBar(
+        errorMessage:
+            'Ops! Houve um erro ao criar a conta. Por favor, tente novamente',
+        theme: Theme.of(context),
+      ),
+    );
+  }
+
+  void _showFailedLoginSnackBar(final BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      ErrorSnackBar(
+        errorMessage:
+            'Ops! Houve um erro ao entrar. Verifique se o email e senha estão corretos',
+        theme: Theme.of(context),
       ),
     );
   }
@@ -67,7 +82,7 @@ class LoginScreen extends StatelessWidget {
     required final String password,
   }) {
     presenter.addEvent(
-      RequestLoginEvent(
+      RequestSignInEvent(
         email: email,
         password: password,
       ),
