@@ -87,4 +87,57 @@ void main() {
       expect(result.errorOrNull, isA<AppError>());
     });
   });
+
+  group('delete', () {
+    setUp(() {});
+
+    test('Should be able to call httpDataSource with the correct values',
+        () async {
+      // arrange
+      mockHttpDataSource(HttpResponse(body: '', statusCode: 200));
+
+      // act
+      await sut.delete('id');
+
+      // assert
+      verify(
+        () => httpDataSource.request(
+          url: '/student/id',
+          method: HttpMethod.delete,
+        ),
+      ).called(1);
+
+      verifyNoMoreInteractions(httpDataSource);
+    });
+
+    test('Should be able to return null on Success', () async {
+      // arrange
+      mockHttpDataSource(HttpResponse(body: '', statusCode: 200));
+
+      // act
+      final result = await sut.delete('id');
+
+      // assert
+
+      expect(result.hasValue, true);
+      expect(result.hasError, false);
+    });
+
+    test('Should be able to return AppError on HttpError', () async {
+      // arrange
+      when(
+        () => httpDataSource.request(
+          url: any(named: 'url'),
+          method: any(named: 'method'),
+          body: any(named: 'body'),
+        ),
+      ).thenThrow(const ServerError());
+
+      // act
+      final result = await sut.delete('id');
+
+      // assert
+      expect(result.errorOrNull, isA<AppError>());
+    });
+  });
 }

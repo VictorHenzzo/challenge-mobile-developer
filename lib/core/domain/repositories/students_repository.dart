@@ -4,4 +4,6 @@ import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
 
 abstract class StudentsRepository {
   Future<Either<AppError, List<StudentEntity>>> fetchStudents();
+
+  Future<Either<AppError, void>> delete(final String id);
 }

@@ -42,4 +42,23 @@ class StudentsRepositoryImpl implements StudentsRepository {
       );
     }
   }
+
+  @override
+  Future<Either<AppError, void>> delete(final String id) async {
+    try {
+      await httpDataSource.request(
+        url: '$studentEndpoint/$id',
+        method: HttpMethod.delete,
+      );
+
+      return const Success(null);
+    } on HttpError catch (exception, stackTrace) {
+      return Failure(
+        AppError(
+          stackTrace: stackTrace,
+          message: exception.message,
+        ),
+      );
+    }
+  }
 }
