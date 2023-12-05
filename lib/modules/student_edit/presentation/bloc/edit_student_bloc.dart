@@ -7,7 +7,7 @@ part 'edit_student_state.dart';
 
 class EditStudentBloc extends Bloc<EditStudentEvent, EditStudentState>
     implements EditStudentPresenter {
-  EditStudentBloc() : super(EditStudentInitial()) {
+  EditStudentBloc() : super(EditStudentInitialState()) {
     on<EditStudentEvent>((event, emit) {
       // TODO: implement event handler
     });
