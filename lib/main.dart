@@ -4,6 +4,7 @@ import 'package:challenge_mobile_developer/core/infra/navigation/route_manager.d
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_route.dart';
 import 'package:challenge_mobile_developer/theme/app_theme_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   await const InfraInitializer().loadDependencies();
@@ -23,6 +24,12 @@ class MyApp extends StatelessWidget {
       navigatorKey: AppNavigator.navigatorKey,
       initialRoute: LoginScreenRoute.path,
       onGenerateRoute: const RouteManager().onGenerateRoute,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt'),
+      ],
     );
   }
 }
