@@ -12,6 +12,7 @@ part 'components/home_screen_error_widget.dart';
 part 'components/students_list_widget.dart';
 part 'components/student_list_tile.dart';
 part 'components/add_new_student_button_widget.dart';
+part 'components/alert_dialogs.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({
@@ -37,7 +38,7 @@ class HomeScreen extends StatelessWidget {
             (final HomeDependenciesLoadedState loadedState) =>
               _StudentsListWidget(
                 students: loadedState.students,
-                deleteStudent: _deleteStudent,
+                onDeleteTap: _showDeleteDialog,
               ),
             (final HomeDependenciesErrorState _) => _HomeScreenErrorWidget(
                 tryAgain: _fetchContent,
@@ -55,9 +56,31 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void _showDeleteDialog({
+    required final BuildContext context,
+    required final StudentEntity student,
+  }) {
+    showDialog(
+      context: context,
+      builder: (final _) {
+        return _ConfirmStudentDeletionAlertDialog(
+          dismiss: _dismiss,
+          onConfirm: _deleteStudent,
+          student: student,
+        );
+      },
+    );
+  }
+
   void _deleteStudent(final StudentEntity student) {
     studentsManagerPresenter.addEvent(
       StudentsManagerDeleteEvent(student),
+    );
+  }
+
+  void _dismiss() {
+    studentsManagerPresenter.addEvent(
+      const StudentsManagerDismissEvent(),
     );
   }
 }

@@ -3,12 +3,15 @@ part of '../home_screen.dart';
 class _StudentsListWidget extends StatelessWidget {
   _StudentsListWidget({
     required final List<StudentEntity> students,
-    required this.deleteStudent,
+    required this.onDeleteTap,
   })  : students = List.from(students),
         super(key: const Key('studentsListWidget'));
 
   final List<StudentEntity> students;
-  final void Function(StudentEntity) deleteStudent;
+  final void Function({
+    required BuildContext context,
+    required StudentEntity student,
+  }) onDeleteTap;
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   AnimatedListState? get _animatedList => _listKey.currentState;
@@ -30,12 +33,12 @@ class _StudentsListWidget extends StatelessWidget {
               left: screenSize.width * 0.02,
               right: screenSize.width * 0.02,
             ),
-            itemBuilder: (final context, final index, final animation) {
+            itemBuilder: (final _, final index, final animation) {
               final student = students[index];
 
               return _StudentListTile(
                 student: student,
-                onDelete: () => deleteStudent(student),
+                onDelete: () => onDeleteTap(context: context, student: student),
                 onEdit: () {},
                 animation: animation,
               );
