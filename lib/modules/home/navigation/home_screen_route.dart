@@ -10,26 +10,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeScreenRoute {
   static const String path = '/home';
 
-  static Widget of(final BuildContext context) {
+  static Route of() {
     final dependenciesPresenter =
         const ServiceLocator().get<HomeDependenciesPresenter>();
 
     final studentsManagerPresenter =
         const ServiceLocator().get<StudentsManagerPresenter>();
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (final _) => dependenciesPresenter as HomeDependenciesBloc,
-        ),
-        BlocProvider(
-          create: (final _) => studentsManagerPresenter as StudentsManagerBloc,
-        ),
-      ],
-      child: HomeScreen(
-        dependenciesPresenter: dependenciesPresenter,
-        studentsManagerPresenter: studentsManagerPresenter,
-      ),
+    return MaterialPageRoute(
+      builder: (final _) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (final _) =>
+                  dependenciesPresenter as HomeDependenciesBloc,
+            ),
+            BlocProvider(
+              create: (final _) =>
+                  studentsManagerPresenter as StudentsManagerBloc,
+            ),
+          ],
+          child: HomeScreen(
+            dependenciesPresenter: dependenciesPresenter,
+            studentsManagerPresenter: studentsManagerPresenter,
+          ),
+        );
+      },
     );
   }
 }

@@ -6,14 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreenRoute {
-  static const String path = '/login';
+  static const String path = '/';
 
-  static Widget of(final BuildContext context) {
+  static Route of() {
     final presenter = const ServiceLocator().get<LoginPresenter>();
 
-    return BlocProvider<LoginBloc>(
-      create: (final _) => presenter as LoginBloc,
-      child: LoginScreen(presenter: presenter),
+    return MaterialPageRoute(
+      builder: (final _) {
+        return BlocProvider<LoginBloc>(
+          create: (final _) => presenter as LoginBloc,
+          child: LoginScreen(presenter: presenter),
+        );
+      },
     );
   }
 }

@@ -35,6 +35,7 @@ class AppNavigator {
     return _currentState.pushNamedAndRemoveUntil(
       routeName,
       (final route) => false,
+      arguments: arguments,
     );
   }
 
