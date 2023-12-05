@@ -23,41 +23,43 @@ import 'package:challenge_mobile_developer/core/data/repositories/user_repositor
 import 'package:challenge_mobile_developer/core/domain/repositories/students_repository.dart'
     as _i12;
 import 'package:challenge_mobile_developer/core/domain/repositories/user_repository.dart'
-    as _i17;
-import 'package:challenge_mobile_developer/core/domain/use_cases/check_auth_state_use_case.dart'
     as _i18;
+import 'package:challenge_mobile_developer/core/domain/use_cases/check_auth_state_use_case.dart'
+    as _i19;
 import 'package:challenge_mobile_developer/core/domain/use_cases/create_student_use_case.dart'
     as _i14;
 import 'package:challenge_mobile_developer/core/domain/use_cases/delete_student_use_case.dart'
     as _i15;
-import 'package:challenge_mobile_developer/core/domain/use_cases/fetch_students_use_case.dart'
+import 'package:challenge_mobile_developer/core/domain/use_cases/edit_student_use_case.dart'
     as _i16;
+import 'package:challenge_mobile_developer/core/domain/use_cases/fetch_students_use_case.dart'
+    as _i17;
 import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart'
-    as _i21;
+    as _i22;
 import 'package:challenge_mobile_developer/core/infra/bindings/http_data_source_module.dart'
-    as _i26;
-import 'package:challenge_mobile_developer/core/infra/bindings/local_data_source_module.dart'
     as _i27;
-import 'package:challenge_mobile_developer/core/infra/bindings/students_module.dart'
+import 'package:challenge_mobile_developer/core/infra/bindings/local_data_source_module.dart'
     as _i28;
-import 'package:challenge_mobile_developer/core/infra/bindings/user_module.dart'
+import 'package:challenge_mobile_developer/core/infra/bindings/students_module.dart'
     as _i29;
+import 'package:challenge_mobile_developer/core/infra/bindings/user_module.dart'
+    as _i30;
 import 'package:challenge_mobile_developer/modules/home/navigation/home_screen_directions.dart'
     as _i4;
 import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_bloc/home_dependencies_bloc.dart'
-    as _i20;
+    as _i21;
 import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_presenter.dart'
-    as _i19;
+    as _i20;
 import 'package:challenge_mobile_developer/modules/home/presentation/students_manager_bloc/students_manager_bloc.dart'
-    as _i23;
+    as _i24;
 import 'package:challenge_mobile_developer/modules/home/presentation/students_manager_presenter.dart'
-    as _i22;
+    as _i23;
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_directions.dart'
     as _i7;
 import 'package:challenge_mobile_developer/modules/login/presentation/bloc/login_bloc.dart'
-    as _i25;
+    as _i26;
 import 'package:challenge_mobile_developer/modules/login/presentation/login_presenter.dart'
-    as _i24;
+    as _i25;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:http/http.dart' as _i3;
 import 'package:injectable/injectable.dart' as _i2;
@@ -105,43 +107,47 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i14.CreateStudentUseCaseImpl(gh<_i12.StudentsRepository>()));
     gh.factory<_i15.DeleteStudentUseCaseImpl>(
         () => _i15.DeleteStudentUseCaseImpl(gh<_i12.StudentsRepository>()));
-    gh.factory<_i16.FetchStudentsUseCaseImpl>(
-        () => _i16.FetchStudentsUseCaseImpl(gh<_i12.StudentsRepository>()));
-    gh.factory<_i17.UserRepository>(
+    gh.factory<_i16.EditStudentUseCaseImpl>(
+        () => _i16.EditStudentUseCaseImpl(gh<_i12.StudentsRepository>()));
+    gh.factory<_i17.FetchStudentsUseCaseImpl>(
+        () => _i17.FetchStudentsUseCaseImpl(gh<_i12.StudentsRepository>()));
+    gh.factory<_i18.UserRepository>(
         () => authModule.authRepository(gh<_i13.UserRepositoryImpl>()));
-    gh.factory<_i18.CheckAuthStateUseCaseImpl>(
-        () => _i18.CheckAuthStateUseCaseImpl(gh<_i17.UserRepository>()));
+    gh.factory<_i19.CheckAuthStateUseCaseImpl>(
+        () => _i19.CheckAuthStateUseCaseImpl(gh<_i18.UserRepository>()));
     gh.factory<_i14.CreateStudentUseCase>(() => studentsModule
         .createStudentUseCase(gh<_i14.CreateStudentUseCaseImpl>()));
     gh.factory<_i15.DeleteStudentUseCase>(() => studentsModule
         .deleteStudentUseCase(gh<_i15.DeleteStudentUseCaseImpl>()));
-    gh.factory<_i16.FetchStudentsUseCase>(() => studentsModule
-        .fetchStudentsUseCase(gh<_i16.FetchStudentsUseCaseImpl>()));
-    gh.factory<_i19.HomeDependenciesPresenter>(() => _i20.HomeDependenciesBloc(
-        fetchStudentsUseCase: gh<_i16.FetchStudentsUseCase>()));
-    gh.factory<_i21.SignInUseCaseImpl>(
-        () => _i21.SignInUseCaseImpl(gh<_i17.UserRepository>()));
-    gh.factory<_i22.StudentsManagerPresenter>(() => _i23.StudentsManagerBloc(
+    gh.factory<_i16.EditStudentUseCase>(() =>
+        studentsModule.editStudentUseCase(gh<_i16.EditStudentUseCaseImpl>()));
+    gh.factory<_i17.FetchStudentsUseCase>(() => studentsModule
+        .fetchStudentsUseCase(gh<_i17.FetchStudentsUseCaseImpl>()));
+    gh.factory<_i20.HomeDependenciesPresenter>(() => _i21.HomeDependenciesBloc(
+        fetchStudentsUseCase: gh<_i17.FetchStudentsUseCase>()));
+    gh.factory<_i22.SignInUseCaseImpl>(
+        () => _i22.SignInUseCaseImpl(gh<_i18.UserRepository>()));
+    gh.factory<_i23.StudentsManagerPresenter>(() => _i24.StudentsManagerBloc(
           deleteStudentUseCase: gh<_i15.DeleteStudentUseCase>(),
           directions: gh<_i4.HomeScreenDirections>(),
         ));
-    gh.factory<_i18.CheckAuthStateUseCase>(() =>
-        authModule.checkAuthStateUseCase(gh<_i18.CheckAuthStateUseCaseImpl>()));
-    gh.factory<_i21.SignInUseCase>(
-        () => authModule.signInUseCase(gh<_i21.SignInUseCaseImpl>()));
-    gh.factory<_i24.LoginPresenter>(() => _i25.LoginBloc(
-          checkAuthStateUseCase: gh<_i18.CheckAuthStateUseCase>(),
-          signInUseCase: gh<_i21.SignInUseCase>(),
+    gh.factory<_i19.CheckAuthStateUseCase>(() =>
+        authModule.checkAuthStateUseCase(gh<_i19.CheckAuthStateUseCaseImpl>()));
+    gh.factory<_i22.SignInUseCase>(
+        () => authModule.signInUseCase(gh<_i22.SignInUseCaseImpl>()));
+    gh.factory<_i25.LoginPresenter>(() => _i26.LoginBloc(
+          checkAuthStateUseCase: gh<_i19.CheckAuthStateUseCase>(),
+          signInUseCase: gh<_i22.SignInUseCase>(),
           directions: gh<_i7.LoginScreenDirections>(),
         ));
     return this;
   }
 }
 
-class _$HttpDataSourceModule extends _i26.HttpDataSourceModule {}
+class _$HttpDataSourceModule extends _i27.HttpDataSourceModule {}
 
-class _$LocalDataSourceModule extends _i27.LocalDataSourceModule {}
+class _$LocalDataSourceModule extends _i28.LocalDataSourceModule {}
 
-class _$StudentsModule extends _i28.StudentsModule {}
+class _$StudentsModule extends _i29.StudentsModule {}
 
-class _$AuthModule extends _i29.AuthModule {}
+class _$AuthModule extends _i30.AuthModule {}

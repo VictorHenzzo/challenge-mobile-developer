@@ -2,6 +2,7 @@ import 'package:challenge_mobile_developer/core/data/repositories/students_repos
 import 'package:challenge_mobile_developer/core/domain/repositories/students_repository.dart';
 import 'package:challenge_mobile_developer/core/domain/use_cases/create_student_use_case.dart';
 import 'package:challenge_mobile_developer/core/domain/use_cases/delete_student_use_case.dart';
+import 'package:challenge_mobile_developer/core/domain/use_cases/edit_student_use_case.dart';
 import 'package:challenge_mobile_developer/core/domain/use_cases/fetch_students_use_case.dart';
 import 'package:injectable/injectable.dart';
 
@@ -24,6 +25,11 @@ abstract class StudentsModule {
 
   CreateStudentUseCase createStudentUseCase(
     final CreateStudentUseCaseImpl useCase,
+  ) =>
+      useCase;
+
+  EditStudentUseCase editStudentUseCase(
+    final EditStudentUseCaseImpl useCase,
   ) =>
       useCase;
 }
