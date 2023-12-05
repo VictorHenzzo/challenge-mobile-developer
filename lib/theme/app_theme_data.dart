@@ -24,7 +24,7 @@ class AppThemeData {
     error: Color(0xFFbb233e),
     onError: Color(0xFFbb233e),
     background: Color(0xFFffffff),
-    onBackground: Color(0xFFffffff),
+    onBackground: Color(0xFFf4f6f8),
     surface: Color(0xFFffffff),
     onSurface: Color(0xFFffffff),
     outline: Color(0xFF999696),
@@ -226,13 +226,10 @@ class AppThemeData {
 
   BottomNavigationBarThemeData bottomNavigationBarTheme() {
     return BottomNavigationBarThemeData(
-      backgroundColor: colorScheme.surfaceVariant,
-      elevation: 0,
+      backgroundColor: colorScheme.onBackground,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: colorScheme.primary,
-      selectedLabelStyle: textTheme.labelMedium,
-      unselectedItemColor: colorScheme.outline,
-      unselectedLabelStyle: textTheme.labelSmall,
+      selectedItemColor: colorScheme.secondary,
+      unselectedItemColor: colorScheme.secondary,
     );
   }
 
