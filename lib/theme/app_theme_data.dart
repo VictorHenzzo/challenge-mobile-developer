@@ -26,7 +26,7 @@ class AppThemeData {
     background: Color(0xFFffffff),
     onBackground: Color(0xFFf4f6f8),
     surface: Color(0xFFffffff),
-    onSurface: Color(0xFFffffff),
+    onSurface: Color(0xFF166381),
     outline: Color(0xFF999696),
   );
 

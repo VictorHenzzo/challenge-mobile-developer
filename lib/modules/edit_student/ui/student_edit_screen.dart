@@ -1,6 +1,7 @@
 import 'package:challenge_mobile_developer/core/domain/entities/student_entity.dart';
 import 'package:challenge_mobile_developer/core/domain/parameters/create_student_params.dart';
 import 'package:challenge_mobile_developer/core/domain/parameters/edit_student_params.dart';
+import 'package:challenge_mobile_developer/core/mixins/date_formatter_mixin.dart';
 import 'package:challenge_mobile_developer/core/mixins/validator_mixin.dart';
 import 'package:challenge_mobile_developer/modules/edit_student/presentation/bloc/edit_student_bloc.dart';
 import 'package:challenge_mobile_developer/modules/edit_student/presentation/edit_student_presenter.dart';
@@ -24,12 +25,14 @@ class EditStudentScreen extends StatefulWidget {
   State<EditStudentScreen> createState() => _EditStudentScreenState();
 }
 
-class _EditStudentScreenState extends State<EditStudentScreen> {
+class _EditStudentScreenState extends State<EditStudentScreen>
+    with DateFormatterMixin {
   late final GlobalKey<FormState> formKey;
   late final TextEditingController nameController;
   late final TextEditingController cpfController;
   late final TextEditingController emailController;
   late final TextEditingController academicRecordController;
+  late final TextEditingController birthdateController;
   late DateTime? birthdate;
 
   @override
@@ -41,7 +44,12 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
     academicRecordController = TextEditingController(
       text: widget.student?.academicRecord,
     );
-    birthdate = null;
+
+    birthdate = widget.student?.birthdate;
+
+    birthdateController = TextEditingController(
+      text: birthdate != null ? dateToDDMMYYYY(birthdate!) : null,
+    );
 
     super.initState();
   }
@@ -70,13 +78,33 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
             cpfController: cpfController,
             academicRecordController: academicRecordController,
             emailController: emailController,
+            birthdateController: birthdateController,
             formKey: formKey,
+            openDatePicker: _openDatePicker,
             isLoading: state is EditStudentLoadingState,
             onSave: _onSave,
           );
         },
       ),
     );
+  }
+
+  Future<void> _openDatePicker(final BuildContext context) async {
+    final date = await showDatePicker(
+      context: context,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      barrierColor: Colors.grey.withOpacity(0.8),
+      helpText: 'Data de nascimento',
+      initialDate: birthdate,
+    );
+
+    if (date == null) {
+      return;
+    }
+
+    birthdate = date;
+    birthdateController.text = dateToDDMMYYYY(birthdate!);
   }
 
   String get _appBarTitle =>
