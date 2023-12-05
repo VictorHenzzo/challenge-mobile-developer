@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'components/home_screen_error_widget.dart';
 part 'components/students_list_widget.dart';
 part 'components/student_list_tile.dart';
+part 'components/add_new_student_button_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({
@@ -26,22 +27,19 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Alunos'),
       ),
       bottomNavigationBar: const AppBottomNavBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: BlocBuilder<HomeDependenciesBloc, HomeDependenciesState>(
-          builder: (final _, final state) {
-            return switch (state) {
-              (final HomeDependenciesLoadedState loadedState) =>
-                _StudentsListWidget(
-                  state: loadedState,
-                ),
-              (final HomeDependenciesErrorState _) => _HomeScreenErrorWidget(
-                  tryAgain: _fetchContent,
-                ),
-              _ => const CustomLoadingWidget(),
-            };
-          },
-        ),
+      body: BlocBuilder<HomeDependenciesBloc, HomeDependenciesState>(
+        builder: (final _, final state) {
+          return switch (state) {
+            (final HomeDependenciesLoadedState loadedState) =>
+              _StudentsListWidget(
+                state: loadedState,
+              ),
+            (final HomeDependenciesErrorState _) => _HomeScreenErrorWidget(
+                tryAgain: _fetchContent,
+              ),
+            _ => const CustomLoadingWidget(),
+          };
+        },
       ),
     );
   }
