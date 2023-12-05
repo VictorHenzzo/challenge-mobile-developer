@@ -20,14 +20,46 @@ class EditStudentBloc extends Bloc<EditStudentEvent, EditStudentState>
     required this.createStudentUseCase,
     required this.editStudentUseCase,
   }) : super(const EditStudentInitialState()) {
-    on<EditStudentEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<RequestCreateEvent>(_onRequestCreateEvent);
+    on<RequestEditEvent>(_onRequestEditEvent);
   }
 
   final StudentEditDirections directions;
   final CreateStudentUseCase createStudentUseCase;
   final EditStudentUseCase editStudentUseCase;
+
+  Future<void> _onRequestCreateEvent(
+    final RequestCreateEvent event,
+    final Emitter<EditStudentState> emit,
+  ) async {
+    emit(const EditStudentLoadingState());
+
+    final result = await createStudentUseCase.create(
+      event.params,
+    );
+
+    result.fold(
+      onError: (final _) => emit(const StudentCreationFailedState()),
+      onSuccess: directions.goBack,
+    );
+  }
+
+  Future<void> _onRequestEditEvent(
+    final RequestEditEvent event,
+    final Emitter<EditStudentState> emit,
+  ) async {
+    emit(const EditStudentLoadingState());
+
+    final result = await editStudentUseCase.edit(
+      id: event.student.id,
+      params: event.params,
+    );
+
+    result.fold(
+      onError: (final _) => emit(const StudentEditFailedState()),
+      onSuccess: directions.goBack,
+    );
+  }
 
   @override
   void addEvent(final EditStudentEvent event) {
