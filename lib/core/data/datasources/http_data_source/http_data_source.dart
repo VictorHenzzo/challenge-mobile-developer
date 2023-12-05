@@ -1,4 +1,4 @@
-enum HttpMethod { get, post, delete }
+enum HttpMethod { get, post, delete, put }
 
 class HttpResponse {
   HttpResponse({required this.body, required this.statusCode});

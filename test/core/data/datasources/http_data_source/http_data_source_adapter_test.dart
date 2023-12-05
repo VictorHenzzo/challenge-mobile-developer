@@ -41,6 +41,14 @@ void main() {
     );
   }
 
+  void mockPut(final String body, final int statusCode) {
+    when(
+      () => client.put(any(), body: any(named: 'body')),
+    ).thenAnswer(
+      (final _) async => http.Response(body, statusCode),
+    );
+  }
+
   void mockDelete(final String body, final int statusCode) {
     when(
       () => client.delete(any(), body: any(named: 'body')),
@@ -316,6 +324,114 @@ void main() {
         final request = sut.request(
           url: url,
           method: HttpMethod.delete,
+        );
+
+        // assert
+        expect(request, throwsA(const ServerError(message: 'error')));
+      });
+    });
+  });
+
+  group('PUT', () {
+    group('Success', () {
+      test('Should be able to make a PUT request with the correct values',
+          () async {
+        // arrange
+        mockPut('body', 200);
+
+        // act
+        await sut.request(
+          url: url,
+          body: body,
+          method: HttpMethod.put,
+        );
+
+        // assert
+        verify(
+          () => client.put(
+            formattedUrl,
+            body: body,
+          ),
+        ).called(1);
+
+        verifyNoMoreInteractions(client);
+      });
+
+      test('Should be able to return HttpResponse on 200 status code',
+          () async {
+        // arrange
+        mockPut('body', 200);
+
+        // act
+        final result = await sut.request(
+          url: url,
+          method: HttpMethod.put,
+          body: body,
+        );
+
+        // assert
+        expect(result.body, 'body');
+        expect(result.statusCode, 200);
+      });
+
+      test('Should be able to return HttpResponse on 201 status code',
+          () async {
+        // arrange
+        mockPut('body', 201);
+
+        // act
+        final result = await sut.request(
+          url: url,
+          method: HttpMethod.put,
+          body: body,
+        );
+
+        // assert
+        expect(result.body, 'body');
+        expect(result.statusCode, 201);
+      });
+    });
+
+    group('Failure', () {
+      test('Should be able to throw BadRequest on 400', () async {
+        // arrange
+        mockPut('error', 400);
+
+        // act
+        final request = sut.request(
+          url: url,
+          body: body,
+          method: HttpMethod.put,
+        );
+
+        // assert
+        expect(request, throwsA(const BadRequest(message: 'error')));
+      });
+
+      test('Should be able to throw NotFound on 404', () async {
+        // arrange
+        mockPut('error', 404);
+
+        // act
+        final request = sut.request(
+          url: url,
+          body: body,
+          method: HttpMethod.put,
+        );
+
+        // assert
+        expect(request, throwsA(const NotFound(message: 'error')));
+      });
+
+      test('Should be able to throw ServerError on 500', () async {
+        // arrange
+        mockPut('error', 500);
+
+        // act
+        final request = sut.request(
+          url: url,
+          body: body,
+          method: HttpMethod.put,
         );
 
         // assert

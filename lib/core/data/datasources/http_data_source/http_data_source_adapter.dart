@@ -41,6 +41,8 @@ final class HttpDataSourceAdapter implements HttpDataSource {
         return client.post(url, body: body);
       case HttpMethod.delete:
         return client.delete(url);
+      case HttpMethod.put:
+        return client.put(url, body: body);
     }
   }
 
