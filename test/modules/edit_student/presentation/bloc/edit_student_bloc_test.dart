@@ -7,8 +7,8 @@ import 'package:challenge_mobile_developer/core/domain/use_cases/create_student_
 import 'package:challenge_mobile_developer/core/domain/use_cases/edit_student_use_case.dart';
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
 import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
-import 'package:challenge_mobile_developer/modules/student_edit/navigation/student_edit_directions.dart';
-import 'package:challenge_mobile_developer/modules/student_edit/presentation/bloc/edit_student_bloc.dart';
+import 'package:challenge_mobile_developer/modules/edit_student/navigation/student_edit_directions.dart';
+import 'package:challenge_mobile_developer/modules/edit_student/presentation/bloc/edit_student_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -179,7 +179,8 @@ void main() {
   });
 }
 
-class _StudentEditDirectionsSpy extends Mock implements StudentEditDirections {}
+class _StudentEditDirectionsSpy extends Mock
+    implements EditStudentScreenDirections {}
 
 class _CreateStudentUseCaseSpy extends Mock implements CreateStudentUseCase {}
 

@@ -3,7 +3,7 @@ import 'package:challenge_mobile_developer/core/infra/navigation/app_navigator.d
 import 'package:injectable/injectable.dart';
 
 @injectable
-class StudentEditDirections {
+class EditStudentScreenDirections {
   void goBack(final StudentEntity student) {
     const AppNavigator().pop(
       result: student,
