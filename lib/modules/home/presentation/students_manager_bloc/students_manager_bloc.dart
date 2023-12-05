@@ -17,9 +17,23 @@ class StudentsManagerBloc
     required this.deleteStudentUseCase,
     required this.directions,
   }) : super(const StudentsManagerInitialState()) {
-    on<StudentsManagerEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<StudentsManagerDeleteEvent>(_onStudentsManagerDeleteEvent);
+  }
+
+  Future<void> _onStudentsManagerDeleteEvent(
+    final StudentsManagerDeleteEvent event,
+    final Emitter<StudentsManagerState> emit,
+  ) async {
+    final result = await deleteStudentUseCase.delete(event.student.id);
+
+    result.fold(
+      onError: (final _) => emit(
+        StudentsManagerDeleteFailedState(event.student),
+      ),
+      onSuccess: (final _) => emit(
+        StudentsManagerDeleteSuccessState(event.student),
+      ),
+    );
   }
 
   final DeleteStudentUseCase deleteStudentUseCase;

@@ -7,7 +7,7 @@ sealed class StudentsManagerEvent extends Equatable {
   List<Object> get props => [];
 }
 
-sealed class StudentsManagerDeleteEvent extends Equatable {
+final class StudentsManagerDeleteEvent extends StudentsManagerEvent {
   const StudentsManagerDeleteEvent(this.student);
 
   final StudentEntity student;
