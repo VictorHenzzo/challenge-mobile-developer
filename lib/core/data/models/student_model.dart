@@ -13,12 +13,12 @@ class StudentModel extends StudentEntity {
 
   factory StudentModel.fromJson(final Map<String, dynamic> json) {
     return StudentModel(
-      academicRecord: json['academic_record'].toString(),
+      academicRecord: json['academic_record'],
       name: json['name'],
       email: json['email'],
-      birthdate: DateTime.now(),
+      birthdate: DateTime.parse(json['birthdate']),
       createdAt: DateTime.parse(json['createdAt']),
-      cpf: json['cpf'].toString(),
+      cpf: json['cpf'],
       id: json['id'],
     );
   }

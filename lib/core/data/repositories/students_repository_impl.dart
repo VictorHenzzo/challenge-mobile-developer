@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart';
 import 'package:challenge_mobile_developer/core/data/models/student_model.dart';
 import 'package:challenge_mobile_developer/core/domain/entities/student_entity.dart';
+import 'package:challenge_mobile_developer/core/domain/parameters/create_student_params.dart';
 import 'package:challenge_mobile_developer/core/domain/repositories/students_repository.dart';
 import 'package:challenge_mobile_developer/core/infra/either/either.dart';
 import 'package:challenge_mobile_developer/core/infra/errors/app_error.dart';
@@ -52,6 +53,31 @@ class StudentsRepositoryImpl implements StudentsRepository {
       );
 
       return const Success(null);
+    } on HttpError catch (exception, stackTrace) {
+      return Failure(
+        AppError(
+          stackTrace: stackTrace,
+          message: exception.message,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppError, StudentEntity>> create(
+    final CreateStudentParams params,
+  ) async {
+    try {
+      final result = await httpDataSource.request(
+        url: studentEndpoint,
+        method: HttpMethod.post,
+        body: params.toJson(),
+      );
+
+      final json = jsonDecode(result.body);
+      final student = StudentModel.fromJson(json);
+
+      return Success(student);
     } on HttpError catch (exception, stackTrace) {
       return Failure(
         AppError(
