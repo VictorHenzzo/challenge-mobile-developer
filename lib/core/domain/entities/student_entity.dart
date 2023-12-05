@@ -8,6 +8,7 @@ class StudentEntity extends Equatable {
     required this.birthdate,
     required this.cpf,
     required this.createdAt,
+    required this.id,
   });
 
   final String academicRecord;
@@ -16,6 +17,7 @@ class StudentEntity extends Equatable {
   final DateTime birthdate;
   final DateTime createdAt;
   final String cpf;
+  final String id;
 
   @override
   List<Object?> get props => [
@@ -25,5 +27,6 @@ class StudentEntity extends Equatable {
         birthdate,
         createdAt,
         cpf,
+        id,
       ];
 }
