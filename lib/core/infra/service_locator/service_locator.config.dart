@@ -23,31 +23,33 @@ import 'package:challenge_mobile_developer/core/data/repositories/user_repositor
 import 'package:challenge_mobile_developer/core/domain/repositories/students_repository.dart'
     as _i11;
 import 'package:challenge_mobile_developer/core/domain/repositories/user_repository.dart'
-    as _i14;
-import 'package:challenge_mobile_developer/core/domain/use_cases/check_auth_state_use_case.dart'
     as _i15;
-import 'package:challenge_mobile_developer/core/domain/use_cases/fetch_students_use_case.dart'
-    as _i13;
-import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart'
-    as _i18;
-import 'package:challenge_mobile_developer/core/infra/bindings/http_data_source_module.dart'
-    as _i21;
-import 'package:challenge_mobile_developer/core/infra/bindings/local_data_source_module.dart'
-    as _i22;
-import 'package:challenge_mobile_developer/core/infra/bindings/students_module.dart'
-    as _i23;
-import 'package:challenge_mobile_developer/core/infra/bindings/user_module.dart'
-    as _i24;
-import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_bloc/home_dependencies_bloc.dart'
-    as _i17;
-import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_presenter.dart'
+import 'package:challenge_mobile_developer/core/domain/use_cases/check_auth_state_use_case.dart'
     as _i16;
+import 'package:challenge_mobile_developer/core/domain/use_cases/delete_student_use_case.dart'
+    as _i13;
+import 'package:challenge_mobile_developer/core/domain/use_cases/fetch_students_use_case.dart'
+    as _i14;
+import 'package:challenge_mobile_developer/core/domain/use_cases/sign_in_use_case.dart'
+    as _i19;
+import 'package:challenge_mobile_developer/core/infra/bindings/http_data_source_module.dart'
+    as _i22;
+import 'package:challenge_mobile_developer/core/infra/bindings/local_data_source_module.dart'
+    as _i23;
+import 'package:challenge_mobile_developer/core/infra/bindings/students_module.dart'
+    as _i24;
+import 'package:challenge_mobile_developer/core/infra/bindings/user_module.dart'
+    as _i25;
+import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_bloc/home_dependencies_bloc.dart'
+    as _i18;
+import 'package:challenge_mobile_developer/modules/home/presentation/home_dependencies_presenter.dart'
+    as _i17;
 import 'package:challenge_mobile_developer/modules/login/navigation/login_screen_directions.dart'
     as _i6;
 import 'package:challenge_mobile_developer/modules/login/presentation/bloc/login_bloc.dart'
-    as _i20;
+    as _i21;
 import 'package:challenge_mobile_developer/modules/login/presentation/login_presenter.dart'
-    as _i19;
+    as _i20;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:http/http.dart' as _i3;
 import 'package:injectable/injectable.dart' as _i2;
@@ -90,35 +92,39 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i4.HttpDataSource>(),
           gh<_i10.LocalDataSource>(),
         ));
-    gh.factory<_i13.FetchStudentsUseCaseImpl>(
-        () => _i13.FetchStudentsUseCaseImpl(gh<_i11.StudentsRepository>()));
-    gh.factory<_i14.UserRepository>(
+    gh.factory<_i13.DeleteStudentUseCaseImpl>(
+        () => _i13.DeleteStudentUseCaseImpl(gh<_i11.StudentsRepository>()));
+    gh.factory<_i14.FetchStudentsUseCaseImpl>(
+        () => _i14.FetchStudentsUseCaseImpl(gh<_i11.StudentsRepository>()));
+    gh.factory<_i15.UserRepository>(
         () => authModule.authRepository(gh<_i12.UserRepositoryImpl>()));
-    gh.factory<_i15.CheckAuthStateUseCaseImpl>(
-        () => _i15.CheckAuthStateUseCaseImpl(gh<_i14.UserRepository>()));
-    gh.factory<_i13.FetchStudentsUseCase>(() => studentsModule
-        .fetchStudentsUseCase(gh<_i13.FetchStudentsUseCaseImpl>()));
-    gh.factory<_i16.HomeDependenciesPresenter>(() => _i17.HomeDependenciesBloc(
-        fetchStudentsUseCase: gh<_i13.FetchStudentsUseCase>()));
-    gh.factory<_i18.SignInUseCaseImpl>(
-        () => _i18.SignInUseCaseImpl(gh<_i14.UserRepository>()));
-    gh.factory<_i15.CheckAuthStateUseCase>(() =>
-        authModule.checkAuthStateUseCase(gh<_i15.CheckAuthStateUseCaseImpl>()));
-    gh.factory<_i18.SignInUseCase>(
-        () => authModule.signInUseCase(gh<_i18.SignInUseCaseImpl>()));
-    gh.factory<_i19.LoginPresenter>(() => _i20.LoginBloc(
-          checkAuthStateUseCase: gh<_i15.CheckAuthStateUseCase>(),
-          signInUseCase: gh<_i18.SignInUseCase>(),
+    gh.factory<_i16.CheckAuthStateUseCaseImpl>(
+        () => _i16.CheckAuthStateUseCaseImpl(gh<_i15.UserRepository>()));
+    gh.factory<_i13.DeleteStudentUseCase>(() => studentsModule
+        .deleteStudentUseCase(gh<_i13.DeleteStudentUseCaseImpl>()));
+    gh.factory<_i14.FetchStudentsUseCase>(() => studentsModule
+        .fetchStudentsUseCase(gh<_i14.FetchStudentsUseCaseImpl>()));
+    gh.factory<_i17.HomeDependenciesPresenter>(() => _i18.HomeDependenciesBloc(
+        fetchStudentsUseCase: gh<_i14.FetchStudentsUseCase>()));
+    gh.factory<_i19.SignInUseCaseImpl>(
+        () => _i19.SignInUseCaseImpl(gh<_i15.UserRepository>()));
+    gh.factory<_i16.CheckAuthStateUseCase>(() =>
+        authModule.checkAuthStateUseCase(gh<_i16.CheckAuthStateUseCaseImpl>()));
+    gh.factory<_i19.SignInUseCase>(
+        () => authModule.signInUseCase(gh<_i19.SignInUseCaseImpl>()));
+    gh.factory<_i20.LoginPresenter>(() => _i21.LoginBloc(
+          checkAuthStateUseCase: gh<_i16.CheckAuthStateUseCase>(),
+          signInUseCase: gh<_i19.SignInUseCase>(),
           directions: gh<_i6.LoginScreenDirections>(),
         ));
     return this;
   }
 }
 
-class _$HttpDataSourceModule extends _i21.HttpDataSourceModule {}
+class _$HttpDataSourceModule extends _i22.HttpDataSourceModule {}
 
-class _$LocalDataSourceModule extends _i22.LocalDataSourceModule {}
+class _$LocalDataSourceModule extends _i23.LocalDataSourceModule {}
 
-class _$StudentsModule extends _i23.StudentsModule {}
+class _$StudentsModule extends _i24.StudentsModule {}
 
-class _$AuthModule extends _i24.AuthModule {}
+class _$AuthModule extends _i25.AuthModule {}
