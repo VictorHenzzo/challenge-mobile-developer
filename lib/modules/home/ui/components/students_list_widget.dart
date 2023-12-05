@@ -64,43 +64,59 @@ class _StudentsListWidget extends StatelessWidget {
   void _listener(final BuildContext context, final StudentsManagerState state) {
     return switch (state) {
       (final StudentsManagerInitialState _) => null,
+      (final StudentsManagerDeleteFailedState _) => _showErrorSnackBar(context),
       (final StudentsManagerDeleteSuccessState state) =>
-        removeFromList(state.student),
-      (final StudentsManagerDeleteFailedState _) => _showErrorSnackBar(
-          context: context,
-          message:
-              'Ops! Houve um erro ao deletar o estudante. Por favor, tente novamente',
-        ),
+        _handleRemove(state.student),
       (final StudentsManagerCreatedState state) =>
-        insertIntoList(state.student),
-      (final StudentsManagerUpdatedState _) => null,
+        _insertStudentIntoList(state.student),
+      (final StudentsManagerUpdatedState state) => _handleUpdate(state.student),
     };
   }
 
-  void _showErrorSnackBar({
-    required final BuildContext context,
-    required final String message,
-  }) {
+  void _showErrorSnackBar(
+    final BuildContext context,
+  ) {
     ScaffoldMessenger.of(context).showSnackBar(
       ErrorSnackBar(
-        errorMessage: message,
+        errorMessage:
+            'Ops! Houve um erro ao deletar o estudante. Por favor, tente novamente',
         theme: Theme.of(context),
       ),
     );
   }
 
-  void insertIntoList(final StudentEntity student) {
-    students.insert(0, student);
-    _animatedList!.insertItem(0);
+  void _handleUpdate(final StudentEntity student) {
+    final index = students.indexWhere(
+      (final entry) => entry.id == student.id,
+    );
+
+    if (index == -1) {
+      return;
+    }
+
+    _removeStudentFromList(index);
+    _insertStudentIntoList(student, index);
   }
 
-  void removeFromList(final StudentEntity student) {
+  void _handleRemove(final StudentEntity student) {
     final index = students.indexOf(student);
 
     if (index == -1) {
       return;
     }
 
+    _removeStudentFromList(index);
+  }
+
+  void _insertStudentIntoList(
+    final StudentEntity student, [
+    final int index = 0,
+  ]) {
+    students.insert(index, student);
+    _animatedList!.insertItem(index);
+  }
+
+  void _removeStudentFromList(final int index) {
     final removedItem = students.removeAt(index);
 
     _animatedList!.removeItem(

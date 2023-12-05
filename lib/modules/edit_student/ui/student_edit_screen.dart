@@ -123,7 +123,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
     }
 
     if (widget.student == null) {
-      widget.presenter.addEvent(
+      return widget.presenter.addEvent(
         RequestCreateEvent(CreateStudentParams(
           name: nameController.text,
           email: emailController.text,

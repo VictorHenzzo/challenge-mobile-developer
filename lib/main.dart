@@ -26,6 +26,8 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: const RouteManager().onGenerateRoute,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('pt'),
