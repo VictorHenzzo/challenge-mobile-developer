@@ -34,6 +34,8 @@ class _EditStudentScreenState extends State<EditStudentScreen>
   late final TextEditingController academicRecordController;
   late final TextEditingController birthdateController;
   late DateTime? birthdate;
+  late final bool cpfIsEnabled;
+  late final bool academicRecordIsEnabled;
 
   @override
   void initState() {
@@ -46,10 +48,12 @@ class _EditStudentScreenState extends State<EditStudentScreen>
     );
 
     birthdate = widget.student?.birthdate;
-
     birthdateController = TextEditingController(
       text: birthdate != null ? dateToDDMMYYYY(birthdate!) : null,
     );
+
+    cpfIsEnabled = _cpfIsEnabled();
+    academicRecordIsEnabled = _academicRecordIsEnabled();
 
     super.initState();
   }
@@ -82,6 +86,8 @@ class _EditStudentScreenState extends State<EditStudentScreen>
             formKey: formKey,
             openDatePicker: _openDatePicker,
             isLoading: state is EditStudentLoadingState,
+            cpfIsEnabled: cpfIsEnabled,
+            academicRecordIsEnabled: academicRecordIsEnabled,
             onSave: _onSave,
           );
         },
@@ -171,4 +177,7 @@ class _EditStudentScreenState extends State<EditStudentScreen>
       ),
     );
   }
+
+  bool _cpfIsEnabled() => widget.student?.cpf == null;
+  bool _academicRecordIsEnabled() => widget.student?.academicRecord == null;
 }

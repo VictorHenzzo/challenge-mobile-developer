@@ -11,6 +11,8 @@ class _StudentForm extends StatelessWidget with ValidatorMixin {
     required this.isLoading,
     required this.openDatePicker,
     required this.onSave,
+    required this.cpfIsEnabled,
+    required this.academicRecordIsEnabled,
   }) : super(key: const Key('studentForm'));
 
   final TextEditingController nameController;
@@ -18,8 +20,10 @@ class _StudentForm extends StatelessWidget with ValidatorMixin {
   final TextEditingController academicRecordController;
   final TextEditingController emailController;
   final TextEditingController birthdateController;
-  final bool isLoading;
   final GlobalKey<FormState> formKey;
+  final bool isLoading;
+  final bool cpfIsEnabled;
+  final bool academicRecordIsEnabled;
 
   final VoidCallback onSave;
   final Future<void> Function(BuildContext) openDatePicker;
@@ -71,6 +75,7 @@ class _StudentForm extends StatelessWidget with ValidatorMixin {
                 controller: cpfController,
                 keyboardType: TextInputType.number,
                 label: 'CPF*',
+                enabled: cpfIsEnabled,
                 key: const Key('cpfFormField'),
               ),
             ),
@@ -82,6 +87,7 @@ class _StudentForm extends StatelessWidget with ValidatorMixin {
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 label: 'Registro acadêmico*',
+                enabled: academicRecordIsEnabled,
                 key: const Key('academicRecordFormField'),
               ),
             ),
@@ -131,6 +137,7 @@ class _EditStudentForm extends StatelessWidget {
     required this.label,
     this.validator,
     this.readOnly = false,
+    this.enabled = true,
     this.inputFormatters,
     this.suffixIcon,
     this.onTap,
@@ -144,6 +151,7 @@ class _EditStudentForm extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Widget? suffixIcon;
   final bool readOnly;
+  final bool enabled;
   final VoidCallback? onTap;
 
   @override
@@ -156,6 +164,7 @@ class _EditStudentForm extends StatelessWidget {
         color: theme.colorScheme.secondary,
       ),
       readOnly: readOnly,
+      enabled: enabled,
       canRequestFocus: !readOnly,
       onTap: onTap,
       inputFormatters: inputFormatters,
