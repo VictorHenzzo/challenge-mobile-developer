@@ -13,7 +13,7 @@ class RouteManager {
     return switch (routeName) {
       HomeScreenRoute.path => HomeScreenRoute.of(),
       EditStudentScreenRoute.path => EditStudentScreenRoute.of(
-          routeSettings.arguments as StudentEntity,
+          routeSettings.arguments as StudentEntity?,
         ),
       _ => LoginScreenRoute.of(),
     };

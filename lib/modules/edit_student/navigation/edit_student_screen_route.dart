@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EditStudentScreenRoute {
   static const String path = '/edit-student';
 
-  static Route of(final StudentEntity student) {
+  static Route of(final StudentEntity? student) {
     final presenter = const ServiceLocator().get<EditStudentPresenter>();
 
     return MaterialPageRoute(
