@@ -1,6 +1,7 @@
 import 'package:challenge_mobile_developer/core/domain/entities/student_entity.dart';
 import 'package:challenge_mobile_developer/core/domain/parameters/create_student_params.dart';
 import 'package:challenge_mobile_developer/core/domain/parameters/edit_student_params.dart';
+import 'package:challenge_mobile_developer/core/formatters/sql_sanitizer_input_formatter.dart';
 import 'package:challenge_mobile_developer/core/mixins/date_formatter_mixin.dart';
 import 'package:challenge_mobile_developer/core/mixins/validator_mixin.dart';
 import 'package:challenge_mobile_developer/modules/edit_student/presentation/bloc/edit_student_bloc.dart';

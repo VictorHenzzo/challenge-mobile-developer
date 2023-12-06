@@ -15,6 +15,6 @@ class SqlSanitizerInputFormatter extends TextInputFormatter {
   }
 
   String sanitizeInput(final String input) {
-    return input.replaceAll(RegExp("[';-]"), '');
+    return input.replaceAll(RegExp("[\"';]|(--)"), '');
   }
 }
