@@ -71,10 +71,11 @@ Os _data sources_ são responsáveis por efetuar requisições a servidores exte
 
 6. Existe um mixin chamado ValidatorMixin, responsável por agrupar métodos de validação. Recomenda-se criar testes unitários para validar as respostas de erro desses métodos.
 
+7. Na tela de listagem de estudantes, ficou pendente a implementação do sistema de busca dos estudantes.
+
 # Quais requisitos obrigatórios que não foram entregues
 
 1. Ao criar um novo registro de estudante, o campo data de nascimento não é considerado obrigatório. Atualmente, o preenchimento desse campo é essencial.
 
 2. Na tela de splash do Android, o ícone exibido não corresponde ao esperado, e no iOS, a imagem de introdução parece estar ligeiramente desproporcional.
 
-3. Na tela de listagem de estudantes, ficou pendente a implementação do sistema de busca dos estudantes.
