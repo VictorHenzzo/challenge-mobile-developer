@@ -171,9 +171,9 @@ class _EditStudentScreenState extends State<EditStudentScreen>
     required final String message,
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
-      ErrorSnackBar(
-        errorMessage: message,
-        theme: Theme.of(context),
+      CustomSnackBar(
+        message: message,
+        color: Theme.of(context).colorScheme.error,
       ),
     );
   }

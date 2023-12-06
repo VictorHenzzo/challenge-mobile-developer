@@ -40,6 +40,7 @@ class HomeScreen extends StatelessWidget {
               _StudentsListWidget(
                 students: loadedState.students,
                 onDeleteTap: _showDeleteDialog,
+                onStudentCreated: _onStudentCreatedDialog,
                 createStudent: _createStudent,
                 editStudent: _editStudent,
               ),
@@ -70,6 +71,19 @@ class HomeScreen extends StatelessWidget {
           dismiss: _dismiss,
           onConfirm: _deleteStudent,
           student: student,
+        );
+      },
+    );
+  }
+
+  void _onStudentCreatedDialog(
+    final BuildContext context,
+  ) {
+    showDialog(
+      context: context,
+      builder: (final _) {
+        return _StudentCreatedAlertDialog(
+          dismiss: _dismiss,
         );
       },
     );

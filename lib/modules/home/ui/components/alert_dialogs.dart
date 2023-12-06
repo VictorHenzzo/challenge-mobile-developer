@@ -34,3 +34,27 @@ class _ConfirmStudentDeletionAlertDialog extends StatelessWidget {
     );
   }
 }
+
+class _StudentCreatedAlertDialog extends StatelessWidget {
+  const _StudentCreatedAlertDialog({
+    required this.dismiss,
+  }) : super(key: const Key('studentCreatedAlertDialog'));
+
+  final VoidCallback dismiss;
+
+  @override
+  Widget build(final BuildContext context) {
+    return AlertDialog(
+      title: const Text('Aluno adicionado'),
+      content: const Text(
+        'O aluno foi adicionado com sucesso!',
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: dismiss,
+          child: const Text('Ok'),
+        ),
+      ],
+    );
+  }
+}

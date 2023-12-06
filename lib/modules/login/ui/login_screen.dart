@@ -55,10 +55,10 @@ class LoginScreen extends StatelessWidget {
 
   void _showFailedSignInSnackBar(final BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      ErrorSnackBar(
-        errorMessage:
+      CustomSnackBar(
+        message:
             'Ops! Houve um erro ao criar a conta. Por favor, tente novamente',
-        theme: Theme.of(context),
+        color: Theme.of(context).colorScheme.error,
       ),
     );
   }

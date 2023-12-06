@@ -6,6 +6,7 @@ class _StudentsListWidget extends StatelessWidget {
     required this.createStudent,
     required this.onDeleteTap,
     required this.editStudent,
+    required this.onStudentCreated,
   })  : students = List.from(students),
         super(key: const Key('studentsListWidget'));
 
@@ -14,6 +15,7 @@ class _StudentsListWidget extends StatelessWidget {
     required BuildContext context,
     required StudentEntity student,
   }) onDeleteTap;
+  final void Function(BuildContext context) onStudentCreated;
   final VoidCallback createStudent;
   final void Function(StudentEntity) editStudent;
 
@@ -64,28 +66,26 @@ class _StudentsListWidget extends StatelessWidget {
   void _listener(final BuildContext context, final StudentsManagerState state) {
     return switch (state) {
       (final StudentsManagerInitialState _) => null,
-      (final StudentsManagerDeleteFailedState _) => _showErrorSnackBar(context),
+      (final StudentsManagerDeleteFailedState _) => _handleError(context),
       (final StudentsManagerDeleteSuccessState state) =>
-        _handleRemove(state.student),
+        _handleRemove(state.student, context),
       (final StudentsManagerCreatedState state) =>
-        _insertStudentIntoList(state.student),
-      (final StudentsManagerUpdatedState state) => _handleUpdate(state.student),
+        _handleCreate(state.student, context),
+      (final StudentsManagerUpdatedState state) =>
+        _handleUpdate(state.student, context),
     };
   }
 
-  void _showErrorSnackBar(
-    final BuildContext context,
-  ) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      ErrorSnackBar(
-        errorMessage:
-            'Ops! Houve um erro ao deletar o estudante. Por favor, tente novamente',
-        theme: Theme.of(context),
-      ),
+  void _handleError(final BuildContext context) {
+    _showSnackBar(
+      context: context,
+      message:
+          'Ops! Houve um erro ao deletar o estudante. Por favor, tente novamente',
+      color: Theme.of(context).colorScheme.error,
     );
   }
 
-  void _handleUpdate(final StudentEntity student) {
+  void _handleUpdate(final StudentEntity student, final BuildContext context) {
     final index = students.indexWhere(
       (final entry) => entry.id == student.id,
     );
@@ -96,9 +96,19 @@ class _StudentsListWidget extends StatelessWidget {
 
     _removeStudentFromList(index);
     _insertStudentIntoList(student, index);
+    _showSnackBar(
+      context: context,
+      message: 'Estudante atualizado com sucesso',
+      color: Colors.green,
+    );
   }
 
-  void _handleRemove(final StudentEntity student) {
+  void _handleCreate(final StudentEntity student, final BuildContext context) {
+    _insertStudentIntoList(student);
+    onStudentCreated(context);
+  }
+
+  void _handleRemove(final StudentEntity student, final BuildContext context) {
     final index = students.indexOf(student);
 
     if (index == -1) {
@@ -106,6 +116,11 @@ class _StudentsListWidget extends StatelessWidget {
     }
 
     _removeStudentFromList(index);
+    _showSnackBar(
+      context: context,
+      message: 'Estudante removido com sucesso',
+      color: Colors.green,
+    );
   }
 
   void _insertStudentIntoList(
@@ -128,6 +143,19 @@ class _StudentsListWidget extends StatelessWidget {
           animation,
         );
       },
+    );
+  }
+
+  void _showSnackBar({
+    required final BuildContext context,
+    required final Color? color,
+    required final String message,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(
+        message: message,
+        color: color,
+      ),
     );
   }
 
