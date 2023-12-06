@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source.dart';
 import 'package:challenge_mobile_developer/core/data/datasources/http_data_source/http_data_source_adapter.dart';
 import 'package:challenge_mobile_developer/core/infra/environment/environment_config.dart';
@@ -28,14 +30,21 @@ void main() {
   });
 
   void mockGet(final String body, final int statusCode) {
-    when(() => client.get(any())).thenAnswer(
+    when(() => client.get(
+          any(),
+          headers: any(named: 'headers'),
+        )).thenAnswer(
       (final _) async => http.Response(body, statusCode),
     );
   }
 
   void mockPost(final String body, final int statusCode) {
     when(
-      () => client.post(any(), body: any(named: 'body')),
+      () => client.post(
+        any(),
+        body: any(named: 'body'),
+        headers: any(named: 'headers'),
+      ),
     ).thenAnswer(
       (final _) async => http.Response(body, statusCode),
     );
@@ -43,7 +52,11 @@ void main() {
 
   void mockPut(final String body, final int statusCode) {
     when(
-      () => client.put(any(), body: any(named: 'body')),
+      () => client.put(
+        any(),
+        body: any(named: 'body'),
+        headers: any(named: 'headers'),
+      ),
     ).thenAnswer(
       (final _) async => http.Response(body, statusCode),
     );
@@ -51,7 +64,11 @@ void main() {
 
   void mockDelete(final String body, final int statusCode) {
     when(
-      () => client.delete(any(), body: any(named: 'body')),
+      () => client.delete(
+        any(),
+        body: any(named: 'body'),
+        headers: any(named: 'headers'),
+      ),
     ).thenAnswer(
       (final _) async => http.Response(body, statusCode),
     );
@@ -72,7 +89,10 @@ void main() {
 
         // assert
         verify(
-          () => client.get(formattedUrl),
+          () => client.get(
+            formattedUrl,
+            headers: HttpDataSourceAdapter.defaultHeaders,
+          ),
         ).called(1);
 
         verifyNoMoreInteractions(client);
@@ -158,7 +178,8 @@ void main() {
         verify(
           () => client.post(
             formattedUrl,
-            body: body,
+            body: jsonEncode(body),
+            headers: HttpDataSourceAdapter.defaultHeaders,
           ),
         ).called(1);
 
@@ -263,7 +284,10 @@ void main() {
 
         // assert
         verify(
-          () => client.delete(formattedUrl),
+          () => client.delete(
+            formattedUrl,
+            headers: HttpDataSourceAdapter.defaultHeaders,
+          ),
         ).called(1);
 
         verifyNoMoreInteractions(client);
@@ -350,7 +374,8 @@ void main() {
         verify(
           () => client.put(
             formattedUrl,
-            body: body,
+            body: jsonEncode(body),
+            headers: HttpDataSourceAdapter.defaultHeaders,
           ),
         ).called(1);
 
