@@ -26,27 +26,14 @@ class CheckAuthStateUseCaseImpl implements CheckAuthStateUseCase {
     }
 
     final remoteUser = await _getUserById(localUser.id);
-
-    if (remoteUser == null) {
-      return AuthState.none;
-    }
-
-    if (localUser == remoteUser) {
-      return AuthState.authenticated;
-    }
-
-    return AuthState.none;
+    return localUser == remoteUser ? AuthState.authenticated : AuthState.none;
   }
 
-  Future<UserEntity?> _getLocalUser() async {
-    final result = await userRepository.getUserFromLocal();
+  Future<UserEntity?> _getLocalUser() async => userRepository
+      .getUserFromLocal()
+      .then((final userEither) => userEither.valueOrNull);
 
-    return result.valueOrNull;
-  }
-
-  Future<UserEntity?> _getUserById(final String id) async {
-    final result = await userRepository.getUserById(id);
-
-    return result.valueOrNull;
-  }
+  Future<UserEntity?> _getUserById(final String id) => userRepository
+      .getUserById(id)
+      .then((final userEither) => userEither.valueOrNull);
 }

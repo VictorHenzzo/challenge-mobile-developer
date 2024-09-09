@@ -24,36 +24,41 @@ final class UserRepositoryImpl implements UserRepository {
     required final String email,
     required final String password,
   }) async {
-    try {
-      final response = await httpDataSource.request(
-        url: loginEndpoint,
-        method: HttpMethod.post,
-        body: {
-          'email': email,
-          'password': password,
-        },
-      );
+    return Either.tryCatch(
+      () async {
+        final response = await httpDataSource.request(
+          url: loginEndpoint,
+          method: HttpMethod.post,
+          body: {
+            'email': email,
+            'password': password,
+          },
+        );
 
-      final user = _userFromEncodedString(response.body);
+        final user = _userFromEncodedString(response.body);
 
-      final result = await localDataSource.save(
-        key: UserModel.cacheKey,
-        value: response.body,
-      );
+        final result = await localDataSource.save(
+          key: UserModel.cacheKey,
+          value: response.body,
+        );
 
-      if (result.hasError) {
-        return Failure(result.errorOrNull!);
-      }
+        if (result.hasError) {
+          return Failure(result.errorOrNull!);
+        }
 
-      return Success(user);
-    } on HttpError catch (exception, stackTrace) {
-      return Failure(
-        AppError(
-          stackTrace: stackTrace,
-          message: exception.message,
-        ),
-      );
-    }
+        return Success(user);
+      },
+      (final exception, final stackTrace) {
+        final message = exception is HttpError ? exception.message : null;
+
+        return Failure(
+          AppError(
+            stackTrace: stackTrace,
+            message: message,
+          ),
+        );
+      },
+    );
   }
 
   @override

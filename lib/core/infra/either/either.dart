@@ -9,6 +9,20 @@ sealed class Either<E extends Exception, S> extends Equatable {
   S? get valueOrNull;
   E? get errorOrNull;
 
+  static Future<Either<E, S>> tryCatch<E extends Exception, S>(
+    final Future<Either<E, S>> Function() callback,
+    final Failure<E, S> Function(
+      Object exception,
+      StackTrace stackTrace,
+    ) catchFunction,
+  ) async {
+    try {
+      return callback();
+    } catch (exception, stackTrace) {
+      return catchFunction(exception, stackTrace);
+    }
+  }
+
   void fold({
     required final void Function(E error) onError,
     required final void Function(S success) onSuccess,
